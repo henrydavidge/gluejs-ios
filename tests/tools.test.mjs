@@ -437,3 +437,11 @@ test('bundles keep the script\'s title comment first, for the run log', async ()
   assert.match(source.split('\n')[0], /^\/\/ Scale Recipe: multiply every ingredient amount/);
   assert.match(source.split('\n')[1], /^\/\/ Bundled by GlueJS/);
 });
+
+test('the npm package ships no installed dependencies from the examples', () => {
+  const [pack] = JSON.parse(execFileSync('npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { cwd: root, encoding: 'utf8' }));
+  const paths = pack.files.map((f) => f.path);
+  assert.ok(!paths.some((p) => p.includes('node_modules') || p.endsWith('package-lock.json')), 'node_modules or lockfiles in the package');
+  assert.ok(paths.includes('docs/reference.md') && paths.includes('docs/gluejs.d.ts') && paths.includes('examples/recipe-scaler/script.ts'));
+  assert.ok(pack.files.length < 150, `${pack.files.length} files`);
+});

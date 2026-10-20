@@ -1,6 +1,6 @@
 {
   "name": "gluejs-ios",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Build Apple Shortcuts that run JavaScript with the GlueJS iOS app: bundle and type-check scripts, generate signed .shortcut files.",
   "license": "MIT",
   "author": "Sirenia LLC <support@sireniallc.com>",
@@ -34,6 +34,7 @@
     "docs/gluejs.d.ts",
     "docs/reference.md",
     "examples/",
+    "!examples/**/node_modules",
     "!examples/**/package-lock.json"
   ],
   "keywords": [
