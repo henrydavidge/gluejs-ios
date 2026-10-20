@@ -1,0 +1,9 @@
+{
+  "name": "Summarize",
+  "color": "purple",
+  "input": { "shareSheet": true, "quickAction": true, "accepts": ["text", "richText", "url", "webPage"], "ifEmpty": "clipboard" },
+  "actions": [
+    { "id": "summary", "type": "runScript", "script": "script.ts", "input": "${shortcutInput}" },
+    { "type": "showResult", "text": "${summary}" }
+  ]
+}

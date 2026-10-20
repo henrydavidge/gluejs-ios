@@ -1,0 +1,105 @@
+{
+  "name": "Morning Briefing",
+  "color": "orange",
+  "actions": [
+    {
+      "type": "comment",
+      "text": "Apple Intelligence (on this iPhone) writes the briefing; switch the Use Model action to Cloud or ChatGPT if you prefer. Weather is Apple Weather for your current location."
+    },
+    {
+      "id": "events",
+      "type": "upcomingEvents",
+      "count": 20
+    },
+    {
+      "id": "title",
+      "type": "eventDetail",
+      "property": "Title",
+      "from": "${events}"
+    },
+    {
+      "id": "startRaw",
+      "type": "eventDetail",
+      "property": "Start Date",
+      "from": "${events}"
+    },
+    {
+      "id": "start",
+      "type": "formatDate",
+      "date": "${startRaw}"
+    },
+    {
+      "id": "allDay",
+      "type": "eventDetail",
+      "property": "Is All Day",
+      "from": "${events}"
+    },
+    {
+      "id": "daily",
+      "type": "weatherForecast",
+      "forecast": "daily"
+    },
+    {
+      "id": "high",
+      "type": "weatherDetail",
+      "property": "High",
+      "from": "${daily}"
+    },
+    {
+      "id": "low",
+      "type": "weatherDetail",
+      "property": "Low",
+      "from": "${daily}"
+    },
+    {
+      "id": "condition",
+      "type": "weatherDetail",
+      "property": "Condition",
+      "from": "${daily}"
+    },
+    {
+      "id": "hourly",
+      "type": "weatherForecast",
+      "forecast": "hourly"
+    },
+    {
+      "id": "hourRaw",
+      "type": "weatherDetail",
+      "property": "Date",
+      "from": "${hourly}"
+    },
+    {
+      "id": "hour",
+      "type": "formatDate",
+      "date": "${hourRaw}"
+    },
+    {
+      "id": "rain",
+      "type": "weatherDetail",
+      "property": "Precipitation Chance",
+      "from": "${hourly}"
+    },
+    {
+      "id": "payload",
+      "type": "text",
+      "text": "<<<title>>>\n${title}\n<<<start>>>\n${start}\n<<<allDay>>>\n${allDay}\n<<<high>>>\n${high}\n<<<low>>>\n${low}\n<<<condition>>>\n${condition}\n<<<hour>>>\n${hour}\n<<<rain>>>\n${rain}\n"
+    },
+    {
+      "id": "facts",
+      "type": "runScript",
+      "script": "script.ts",
+      "input": "${payload}"
+    },
+    {
+      "id": "briefing",
+      "type": "useModel",
+      "model": "onDevice",
+      "prompt": "Write a friendly morning briefing in at most 3 short sentences for a phone notification: what matters today, what to bring or wear for the weather, and any free stretch worth using. Plain text, no greeting.\n\n${facts}"
+    },
+    {
+      "type": "notification",
+      "title": "Today",
+      "body": "${briefing}"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Aurora Alert",
+  "color": "teal",
+  "actions": [
+    { "type": "comment", "text": "Change the town below. Run this from evening automations (e.g. 9 PM, 10 PM, 11 PM); it only notifies when it's worth going outside." },
+    { "id": "city", "type": "text", "text": "Fairbanks" },
+    { "id": "alert", "type": "runScript", "script": "script.ts", "input": "${city}" },
+    { "type": "notification", "title": "Aurora", "body": "${alert}", "when": "${alert}" }
+  ]
+}

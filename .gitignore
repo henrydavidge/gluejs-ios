@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.glue-local/
+*.tgz
+.DS_Store

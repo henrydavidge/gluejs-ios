@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Migraine",
+    "color": "purple",
+    "actions": [
+      { "type": "comment", "text": "Logs a headache in Apple Health (Browse › Symptoms › Headache). Edit the severity there if you like." },
+      { "type": "logHealthSample", "healthType": "Headache", "value": 1 },
+      { "type": "notification", "title": "Migraine", "body": "Logged in Health. Feel better." }
+    ]
+  },
+  {
+    "name": "Migraine Patterns",
+    "color": "purple",
+    "actions": [
+      { "type": "comment", "text": "Change the town below. The report is written by Apple Intelligence on this iPhone; your headache history isn't sent anywhere." },
+      { "id": "town", "type": "text", "text": "London" },
+      { "id": "samples", "type": "findHealthSamples", "healthType": "Headache", "days": 90 },
+      { "id": "startRaw", "type": "healthSampleDetail", "property": "Start Date", "from": "${samples}" },
+      { "id": "start", "type": "formatDate", "date": "${startRaw}" },
+      { "id": "payload", "type": "text", "text": "${town}\n<<<start>>>\n${start}\n" },
+      { "id": "facts", "type": "runScript", "script": "script.ts", "input": "${payload}" },
+      {
+        "id": "summary", "type": "useModel", "model": "onDevice",
+        "prompt": "Here is a fact sheet about someone's migraines and the weather. Write a short, warm summary for them in plain language: 3 or 4 sentences, no lists, no medical advice, and don't overstate the evidence. Mention the forecast if it warns of a pressure drop.\n\n${facts}"
+      },
+      { "type": "showResult", "text": "${summary}" }
+    ]
+  }
+]

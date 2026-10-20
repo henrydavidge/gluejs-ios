@@ -1,0 +1,31 @@
+{
+  "name": "Run Window",
+  "color": "green",
+  "actions": [
+    { "type": "comment", "text": "Run each morning from an automation: Automation › + › Alarm › Is Stopped › Run Immediately › Run Window." },
+    { "id": "events", "type": "upcomingEvents", "count": 20 },
+    { "id": "title", "type": "eventDetail", "property": "Title", "from": "${events}" },
+    { "id": "startRaw", "type": "eventDetail", "property": "Start Date", "from": "${events}" },
+    { "id": "start", "type": "formatDate", "date": "${startRaw}" },
+    { "id": "endRaw", "type": "eventDetail", "property": "End Date", "from": "${events}" },
+    { "id": "end", "type": "formatDate", "date": "${endRaw}" },
+    { "id": "allDay", "type": "eventDetail", "property": "Is All Day", "from": "${events}" },
+    { "id": "hourly", "type": "weatherForecast", "forecast": "hourly" },
+    { "id": "hourRaw", "type": "weatherDetail", "property": "Date", "from": "${hourly}" },
+    { "id": "hour", "type": "formatDate", "date": "${hourRaw}" },
+    { "id": "temp", "type": "weatherDetail", "property": "Temperature", "from": "${hourly}" },
+    { "id": "rain", "type": "weatherDetail", "property": "Precipitation Chance", "from": "${hourly}" },
+    { "id": "daily", "type": "weatherForecast", "forecast": "daily" },
+    { "id": "sunriseRaw", "type": "weatherDetail", "property": "Sunrise Time", "from": "${daily}" },
+    { "id": "sunrise", "type": "formatDate", "date": "${sunriseRaw}" },
+    { "id": "sunsetRaw", "type": "weatherDetail", "property": "Sunset Time", "from": "${daily}" },
+    { "id": "sunset", "type": "formatDate", "date": "${sunsetRaw}" },
+    { "id": "runs", "type": "findHealthSamples", "healthType": "Walking + Running Distance", "days": 7 },
+    { "id": "distance", "type": "healthSampleDetail", "property": "Value", "from": "${runs}" },
+    { "id": "distStartRaw", "type": "healthSampleDetail", "property": "Start Date", "from": "${runs}" },
+    { "id": "distStart", "type": "formatDate", "date": "${distStartRaw}" },
+    { "id": "payload", "type": "text", "text": "<<<title>>>\n${title}\n<<<start>>>\n${start}\n<<<end>>>\n${end}\n<<<allDay>>>\n${allDay}\n<<<hour>>>\n${hour}\n<<<temp>>>\n${temp}\n<<<rain>>>\n${rain}\n<<<sunrise>>>\n${sunrise}\n<<<sunset>>>\n${sunset}\n<<<distance>>>\n${distance}\n<<<distanceStart>>>\n${distStart}\n" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${payload}" },
+    { "type": "notification", "title": "Run", "body": "${result}" }
+  ]
+}

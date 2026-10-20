@@ -1,0 +1,10 @@
+{
+  "name": "Fed Starter",
+  "color": "yellow",
+  "actions": [
+    { "type": "comment", "text": "Your usual feeding ratio (starter:flour:water) and kitchen temperature." },
+    { "id": "setup", "type": "text", "text": "1:2:2 at 70F" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${setup}" },
+    { "type": "notification", "title": "Starter", "body": "${result}" }
+  ]
+}

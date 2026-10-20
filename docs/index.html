@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GlueJS: JavaScript for Apple Shortcuts</title>
+  <meta name="description" content="GlueJS adds a Run JavaScript action to Apple Shortcuts. Let an AI coding agent like Claude or ChatGPT write the script and the shortcut together, then install it with one tap.">
+  <meta property="og:title" content="GlueJS: JavaScript for Apple Shortcuts">
+  <meta property="og:description" content="Code where Shortcuts gets clumsy: loops, APIs, data, widgets. Written by Claude or ChatGPT, installed with one tap.">
+  <meta property="og:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <meta property="og:url" content="https://gluejs.sireniallc.com/">
+  <link rel="canonical" href="https://gluejs.sireniallc.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="alternate" type="text/plain" title="Documentation for AI agents" href="llms.txt">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="index.html"><img src="assets/apple-touch-icon.png" alt="">GlueJS</a>
+      <nav>
+        <a href="#examples">Examples</a>
+        <a href="#how">How it works</a>
+        <a href="#why">Why GlueJS</a>
+        <a href="#agents">For AI agents</a>
+        <a href="#pricing">Pricing</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="hero-inner">
+        <h1>The <span class="glue">glue</span> code for Apple Shortcuts.</h1>
+        <p>GlueJS adds a <strong>Run JavaScript</strong> action to Shortcuts. Describe what you want to an AI coding agent like Claude or ChatGPT; it writes the script and the shortcut together, and you install it with one tap.</p>
+        <div class="buttons">
+          <a class="button" href="#pricing">Coming to the App Store</a>
+          <a class="button secondary" href="llms.txt">Docs for agents</a>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Code where Shortcuts gets clumsy</h2>
+      <p class="lede">Shortcuts is great at triggers and device data. It's painful at loops, JSON, math and APIs. GlueJS handles exactly that part, and nothing else.</p>
+      <div class="grid">
+        <div class="card"><h3>Shortcuts brings the data</h3><p>Health, Calendar, Location, the share sheet, other apps' actions. Shortcuts handles those permissions. GlueJS only asks for Local Network access when a script needs it.</p></div>
+        <div class="card"><h3>Real JavaScript, fast</h3><p>Weeks of Health samples crunched in milliseconds. Top-level await, modern syntax, npm packages bundled ahead of time.</p></div>
+        <div class="card"><h3>Web APIs and your home</h3><p><code>fetch</code> any HTTPS API, or devices on your home network like Home Assistant.</p></div>
+        <div class="card"><h3>Keys that stay put</h3><p>Scripts get a stand-in for each API key. GlueJS inserts the real value only for the sites you allowed.</p></div>
+        <div class="card"><h3>Widgets</h3><p>Publish a number or a short list to a home-screen widget, and let it refresh itself on a schedule.</p></div>
+        <div class="card"><h3>A run log that explains failures</h3><p>Every run from every shortcut: input, output, console and the exact line that failed. Run it again in one tap.</p></div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="split">
+        <div>
+          <h2>How it works</h2>
+          <ol class="steps">
+            <li>Tell your coding agent (Claude Code, or ChatGPT’s Codex) what you want: “a button that logs my workout and a widget with my streak.”</li>
+            <li>It writes a small script and the shortcut around it, tests it on your Mac, and builds a signed shortcut file.</li>
+            <li>Open the file and tap <strong>Add Shortcut</strong>. It syncs to your iPhone.</li>
+            <li>Run it once, then automate it in Shortcuts.</li>
+          </ol>
+          <h3>What you need</h3>
+          <ul class="needs">
+            <li>An iPhone with iOS 18 or later and GlueJS.</li>
+            <li>A Mac (macOS 12 or later, signed into iCloud) with an AI coding agent that can run commands on it: Claude Code (Claude) or Codex (ChatGPT). The agent installs the <code>gluejs-ios</code> tools from npm.</li>
+            <li>For the Apple Intelligence examples: an iPhone that supports it, with iOS 26 or later.</li>
+          </ul>
+        </div>
+        <pre><code>// Did It: log today, keep a streak widget
+const logged = new Set(Store.get('habit:Workout') ?? []);
+logged.add(today);
+Store.set('habit:Workout', [...logged]);
+
+const streak = daysInARow(logged, today);
+Widget.set('Workout', {
+  title: 'Workout',
+  value: `🔥 ${streak} days`,
+});
+return `${streak} days in a row!`;</code></pre>
+      </div>
+    </section>
+
+    <section id="examples">
+      <h2>What people build</h2>
+      <p class="lede">Small, specific things no big app will ever make for you. Each one is a sentence to your coding agent; it writes the script and the shortcut, and you tap Add Shortcut. Your agent can start from any of them.</p>
+      <div class="examples">
+        <article class="example">
+          <span class="tag">Location trigger</span>
+          <h3>What the gym really costs</h3>
+          <p class="ask">“Every time I arrive at the gym, log it and show what each visit is costing me this month.”</p>
+          <div class="result"><b>🏋️ 9 visits</b><br>$5.00 per visit · last month 6 ($7.50 each)</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Arrive at the gym</span><span class="d">Shortcuts automation</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Membership price</span><span class="d">Text in the shortcut</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Log the visit, work out cost per visit</span><span class="d">Store; ignores repeat arrivals</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + notification</span><span class="d">Silent on repeat arrivals</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>A location automation runs the shortcut when you arrive. GlueJS adds the visit to its Store (arriving twice within 3 hours counts once, because GPS can fire more than once) and divides your membership by this month's visits.</dd>
+              <dt>Connects to</dt><dd>Nothing. It works offline.</dd>
+              <dt>You'll be asked</dt><dd>Once: allow Shortcuts to use your location for the automation, and allow the shortcut to run GlueJS.</dd>
+              <dt>Leaves your phone</dt><dd>Nothing. Your location is only used by iOS to trigger the automation; GlueJS never sees it.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Calendar + Health + Weather</span>
+          <h3>When should I run today?</h3>
+          <p class="ask">“Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too.”</p>
+          <div class="result"><b>🏃 6pm–7pm</b><br>66°F, 0% rain · 12.4 mi this week</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Alarm stopped</span><span class="d">Shortcuts automation</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Today's calendar</span><span class="d">Calendar</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">This week's distance</span><span class="d">Apple Health</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Hourly forecast and sunset</span><span class="d">Apple Weather</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Find the best free daylight hour</span><span class="d">Rain, temperature, your calendar</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + notification</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>Shortcuts reads today's events from Calendar, your walking + running distance from Health, and the hourly forecast and sunset from Apple Weather. GlueJS removes hours you're busy or it's dark, scores the rest on rain and temperature, and adds up this week's distance.</dd>
+              <dt>Connects to</dt><dd>Nothing. GlueJS makes no network requests; the forecast comes from Apple Weather.</dd>
+              <dt>You'll be asked</dt><dd>Once each: Location (for the forecast), Calendar, Health access to Walking + Running Distance, and to share them with GlueJS.</dd>
+              <dt>Leaves your phone</dt><dd>Nothing.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Share sheet</span>
+          <h3>Scale any recipe</h3>
+          <p class="ask">“When I share a recipe, ask how many people I'm cooking for and scale the ingredients.”</p>
+          <div class="result"><b>Scaled × 1½</b><br>3⅓ cups flour · 1½ cups (3 sticks) butter · 3 eggs</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Share a recipe page</span><span class="d">Safari share sheet</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">“6 servings”</span><span class="d">Ask for input</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Read the ingredients, rescale every amount</span><span class="d">Fractions and ranges too</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Show result</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>Share a recipe page or selected text. GlueJS reads the page's machine-readable ingredient list (most recipe sites include one for search engines) and rescales every amount.</dd>
+              <dt>Connects to</dt><dd>The recipe website you shared, to read the page.</dd>
+              <dt>You'll be asked</dt><dd>Once: allow the shortcut to share Safari items with GlueJS.</dd>
+              <dt>Keys &amp; cost</dt><dd>None.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">On-device AI · Health</span>
+          <h3>Migraine patterns</h3>
+          <p class="ask">“Let me log migraines with one tap, and once a month tell me whether they line up with pressure changes — privately.”</p>
+          <div class="result">6 of your 9 migraines came after a big pressure drop, which only happens 17% of the time where you live. A drop is forecast for Thursday.</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Tap “Migraine”</span><span class="d">Home Screen or Action button</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Log a headache</span><span class="d">Apple Health</span></li>
+              <li class="trigger"><span class="k">When</span><span class="l">Monthly: “Migraine Patterns”</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Headaches, last 90 days</span><span class="d">Apple Health</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Compare with 3 months of pressure</span><span class="d">Open-Meteo</span></li>
+              <li class="ai"><span class="k">Apple Intelligence</span><span class="l">Write a short summary</span><span class="d">Apple Intelligence, on device</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Show result</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>Headaches are logged in Apple Health, so they're backed up, synced and visible to your doctor. Monthly, GlueJS compares each one with the pressure change in the 24 hours before it, against how pressure usually changes in your town. Apple Intelligence writes it up on the phone.</dd>
+              <dt>Connects to</dt><dd><a href="https://open-meteo.com/">Open-Meteo</a> for pressure; Apple Intelligence <em>on this iPhone</em>.</dd>
+              <dt>Leaves your phone</dt><dd>Only your town's name. Your headache history never does.</dd>
+              <dt>Needs</dt><dd>An iPhone with Apple Intelligence turned on. Switching the step to Private Cloud Compute or ChatGPT works too, but sends the summary off the phone. Not medical advice.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Public data</span>
+          <h3>Aurora alert</h3>
+          <p class="ask">“Tell me when the northern lights might be visible from my town — but only if it's dark and clear.”</p>
+          <div class="result"><b>🌌 Aurora possible now</b><br>18% chance to the north, Kp 5.3, 10% cloud cover.</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Every evening hour</span><span class="d">Time automations</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Aurora + Kp forecast, clouds, darkness</span><span class="d">NOAA, Open-Meteo</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Notify only on good nights</span><span class="d">At most once a night</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget</span><span class="d">Refreshes hourly</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>Checks NOAA's aurora forecast for the sky between you and the pole, geomagnetic activity, and local cloud cover and darkness. Silent unless all three line up.</dd>
+              <dt>Connects to</dt><dd><a href="https://www.swpc.noaa.gov/">NOAA Space Weather Prediction Center</a> and <a href="https://open-meteo.com/">Open-Meteo</a>.</dd>
+              <dt>Leaves your phone</dt><dd>Your town's name, to Open-Meteo.</dd>
+              <dt>Keys &amp; cost</dt><dd>None; both are free public services.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Stocks · API key</span>
+          <h3>What my portfolio is worth</h3>
+          <p class="ask">“Show what my shares are worth and my total gain, and alert me if anything moves 3% or NVDA drops below $120.”</p>
+          <div class="result"><b>🔔 MSFT −4.2% today</b><br>🔔 NVDA is below $120: now $117.20<br>$11,537, −$53 (−0.5%) today</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Daily automation</span><span class="d">Widget also refreshes every 30 min</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Holdings &amp; alerts</span><span class="d">Text in the shortcut</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Fetch quotes, add up value and gain, check alerts</span><span class="d">Finnhub</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + alerts</span><span class="d">Each alert once a day</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>You list holdings (“AAPL 10 @ 150”) and alerts in the shortcut. Apple's Stocks app doesn't track shares, cost or alerts.</dd>
+              <dt>Connects to</dt><dd><a href="https://finnhub.io/">Finnhub</a> stock quotes.</dd>
+              <dt>Leaves your phone</dt><dd>Ticker symbols only, never how many shares you own.</dd>
+              <dt>Keys &amp; cost</dt><dd>A free Finnhub key, saved in your iCloud Keychain by a one-tap setup shortcut; it can only be sent to finnhub.io.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Widget · Offline</span>
+          <h3>Caffeine cutoff</h3>
+          <p class="ask">“When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget.”</p>
+          <div class="result"><b>☕ 210 mg</b><br>Sleep-friendly after 10:40 PM · 318 mg today</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Action button</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">“latte”</span><span class="d">Ask for input</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Log it, work out what's left</span><span class="d">5-hour half-life</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + notification</span><span class="d">Refreshes every 30 min</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>GlueJS knows typical caffeine per drink, keeps two days in its Store, and recalculates on the widget every 30 minutes without logging anything new.</dd>
+              <dt>Connects to</dt><dd>Nothing. It works offline.</dd>
+              <dt>Keys &amp; cost</dt><dd>None.</dd>
+            </dl>
+          </details>
+        </article>
+        <article class="example">
+          <span class="tag">Widget · Offline</span>
+          <h3>Sourdough starter</h3>
+          <p class="ask">“Tap when I feed my starter, and show me on a widget when it'll peak.”</p>
+          <div class="result"><b>🍞 Peak in 3h 10m</b><br>Peaks around 5:40 PM · fed 1:16 PM (1:2:2, 70°F)</div>
+          <details class="more">
+            <summary>How it works</summary>
+            <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Home Screen icon</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Feed ratio and kitchen temperature</span><span class="d">Text in the shortcut</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Estimate the peak</span><span class="d">Baker's rule of thumb</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget countdown</span><span class="d">Refreshes every 30 min</span></li>
+            </ol>
+            <dl>
+              <dt>Steps</dt><dd>Estimates rise time from the feeding ratio and kitchen temperature, then counts down: rising, at its peak, past peak, hungry.</dd>
+              <dt>Connects to</dt><dd>Nothing. It works offline.</dd>
+              <dt>Make it yours</dt><dd>Ask your agent to tune the timings after watching your own starter for a few days.</dd>
+            </dl>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <section id="why">
+      <h2>Why GlueJS?</h2>
+      <p class="lede">Write familiar JavaScript, control what data goes in, and see what happened on every run.</p>
+      <div class="grid why">
+        <div class="card"><h3>You choose the input</h3><p>Shortcuts handles device-data permissions and passes in what your automation needs. Open the shortcut to see exactly what's shared.</p></div>
+        <div class="card"><h3>Familiar JavaScript</h3><p>Use web APIs like <code>fetch</code>, write TypeScript, and bundle compatible npm packages.</p></div>
+        <div class="card"><h3>Control where keys go</h3><p>Use API keys through placeholders. GlueJS inserts their values only for hosts you allow.</p></div>
+        <div class="card"><h3>A record of every run</h3><p>Inspect inputs, outputs, logs and errors. Run a script again in one tap.</p></div>
+        <div class="card"><h3>Build and update on your Mac</h3><p>Your coding agent can type-check, test and generate the shortcut. Sync script edits to your phone without reinstalling.</p></div>
+        <div class="card"><h3>No account. No tracking.</h3><p>We don't receive your script data. Backups and sync follow your Apple settings. <a href="privacy.html">Privacy policy</a></p></div>
+      </div>
+    </section>
+
+    <section id="agents">
+      <h2>Built to be written by AI</h2>
+      <p class="lede">The documentation is written for coding agents like Claude and ChatGPT first: one complete reference with exact limits, error messages and templates, plus TypeScript definitions. Point your agent at it.</p>
+      <div class="grid">
+        <div class="card"><h3><a href="llms.txt">llms.txt</a></h3><p>Start here. An index of everything an agent needs.</p></div>
+        <div class="card"><h3><a href="reference.md">reference.md</a></h3><p>The full contract: script runtime, fetch and secrets, Store, Widget, the shortcut format and builder.</p></div>
+        <div class="card"><h3><a href="gluejs.d.ts">gluejs.d.ts</a></h3><p>Type definitions for <code>Secrets</code>, <code>Store</code>, <code>Widget</code> and script input.</p></div>
+        <div class="card"><h3><a href="https://www.npmjs.com/package/gluejs-ios">gluejs-ios</a></h3><p>The tools, from npm: <code>npx gluejs-ios new</code>, <code>run</code>, <code>build</code>. Type-checks, bundles and signs the shortcut.</p></div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Free</h3>
+          <div class="price">3 runs a day</div>
+          <p>Runs from Shortcuts and widget refreshes count. The Playground and Run Again in the app are always free.</p>
+        </div>
+        <div class="card">
+          <h3>GlueJS Unlimited</h3>
+          <div class="price">$4.99 / year</div>
+          <p>For daily automations and self-refreshing widgets, which use several runs a day. Through the App Store; cancel anytime in Settings.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="support.html">Support</a> · <a href="llms.txt">llms.txt</a></span>
+    </div>
+  </footer>
+</body>
+</html>

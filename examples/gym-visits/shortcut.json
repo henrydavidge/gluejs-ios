@@ -1,0 +1,10 @@
+{
+  "name": "Gym Visit",
+  "color": "red",
+  "actions": [
+    { "type": "comment", "text": "Your monthly membership price. Then: Automation › + › Arrive › your gym › Run Immediately › Gym Visit." },
+    { "id": "price", "type": "text", "text": "$45" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${price}" },
+    { "type": "notification", "title": "Gym", "body": "${result}", "when": "${result}" }
+  ]
+}

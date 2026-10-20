@@ -1,0 +1,62 @@
+{
+  "name": "Last Night's Sleep",
+  "color": "darkBlue",
+  "actions": [
+    {
+      "id": "samples",
+      "type": "findHealthSamples",
+      "healthType": "Sleep",
+      "days": 9
+    },
+    {
+      "id": "val",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${samples}"
+    },
+    {
+      "id": "startRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${samples}"
+    },
+    {
+      "id": "start",
+      "type": "formatDate",
+      "date": "${startRaw}"
+    },
+    {
+      "id": "endRaw",
+      "type": "healthSampleDetail",
+      "property": "End Date",
+      "from": "${samples}"
+    },
+    {
+      "id": "end",
+      "type": "formatDate",
+      "date": "${endRaw}"
+    },
+    {
+      "id": "src",
+      "type": "healthSampleDetail",
+      "property": "Source",
+      "from": "${samples}"
+    },
+    {
+      "id": "payload",
+      "type": "text",
+      "text": "<<<value>>>\n${val}\n<<<start>>>\n${start}\n<<<end>>>\n${end}\n<<<source>>>\n${src}\n"
+    },
+    {
+      "id": "report",
+      "type": "runScript",
+      "script": "script.js",
+      "input": "${payload}"
+    },
+    {
+      "type": "notification",
+      "title": "Last night's sleep",
+      "body": "${report}"
+    }
+  ]
+}

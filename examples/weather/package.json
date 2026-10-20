@@ -1,0 +1,9 @@
+{
+  "name": "glue-example-weather",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "date-fns": "^4.4.0",
+    "zod": "^4.6.7"
+  }
+}

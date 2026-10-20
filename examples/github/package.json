@@ -1,0 +1,8 @@
+{
+  "name": "glue-example-github",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@octokit/core": "^7.0.8"
+  }
+}

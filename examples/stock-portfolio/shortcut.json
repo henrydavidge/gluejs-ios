@@ -1,0 +1,10 @@
+{
+  "name": "My Portfolio",
+  "color": "green",
+  "actions": [
+    { "type": "comment", "text": "Edit your holdings and alerts below. Set up the FINNHUB_KEY secret first (free at finnhub.io)." },
+    { "id": "holdings", "type": "text", "text": "AAPL 10 @ 150\nMSFT 5 @ 310\nVTI 25\nalert NVDA below 120\nalert move 3%" },
+    { "id": "report", "type": "runScript", "script": "script.ts", "input": "${holdings}" },
+    { "type": "notification", "title": "Portfolio", "body": "${report}" }
+  ]
+}

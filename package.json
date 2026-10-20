@@ -1,0 +1,59 @@
+{
+  "name": "gluejs-ios",
+  "version": "0.1.0",
+  "description": "Build Apple Shortcuts that run JavaScript with the GlueJS iOS app: bundle and type-check scripts, generate signed .shortcut files.",
+  "license": "MIT",
+  "author": "Sirenia LLC <support@sireniallc.com>",
+  "homepage": "https://gluejs.sireniallc.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henrydavidge/gluejs-ios.git"
+  },
+  "bugs": {
+    "url": "https://github.com/henrydavidge/gluejs-ios/issues"
+  },
+  "type": "module",
+  "bin": {
+    "gluejs-ios": "cli.mjs"
+  },
+  "exports": {
+    ".": "./build-shortcut.mjs",
+    "./bundle": "./bundle.mjs",
+    "./run": "./run-local.mjs",
+    "./gluejs.d.ts": "./docs/gluejs.d.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "cli.mjs",
+    "build-shortcut.mjs",
+    "bundle.mjs",
+    "new-script.mjs",
+    "push-script.mjs",
+    "run-local.mjs",
+    "setup-secret.mjs",
+    "docs/gluejs.d.ts",
+    "docs/reference.md",
+    "examples/",
+    "!examples/**/package-lock.json"
+  ],
+  "keywords": [
+    "shortcuts",
+    "ios",
+    "iphone",
+    "javascript",
+    "automation",
+    "gluejs"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "pretest": "npm install --silent --no-audit --no-fund --prefix examples/github && npm install --silent --no-audit --no-fund --prefix examples/weather",
+    "test": "node --test tests/*.test.mjs",
+    "serve-docs": "node scripts/serve-docs.mjs"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  }
+}

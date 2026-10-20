@@ -1,0 +1,11 @@
+{
+  "name": "Scale Recipe",
+  "color": "orange",
+  "input": { "shareSheet": true, "quickAction": true, "accepts": ["text", "richText", "url", "webPage"], "ifEmpty": "clipboard" },
+  "actions": [
+    { "id": "scale", "type": "ask", "prompt": "Scale by how much? (2, 1/2, half, or 6 servings)", "inputType": "Text", "default": "2" },
+    { "id": "payload", "type": "text", "text": "${scale}\n${shortcutInput}" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${payload}" },
+    { "type": "showResult", "text": "${result}" }
+  ]
+}

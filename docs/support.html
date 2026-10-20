@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support · GlueJS</title>
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap narrow doc">
+    <header class="site-header">
+      <a class="brand" href="index.html"><img src="assets/apple-touch-icon.png" alt="">GlueJS</a>
+    </header>
+
+    <h1>Support</h1>
+    <p class="updated">Email <a href="mailto:support@sireniallc.com">support@sireniallc.com</a>. A screenshot of the failing run from the app's Runs tab helps a lot.</p>
+
+    <h2>Installing a shortcut</h2>
+    <p>Open the <code>.shortcut</code> file on your Mac (it syncs to your iPhone through iCloud) or AirDrop it to your iPhone, then tap <strong>Add Shortcut</strong>. Run it once by hand before you use it in an automation, so you can answer the one-time prompts.</p>
+
+    <h2>"Allow … to run actions from GlueJS?"</h2>
+    <p>Shortcuts asks this once for each new shortcut that uses GlueJS. Tap Allow.</p>
+
+    <h2>"This action is trying to share … Health items, which is not allowed."</h2>
+    <p>By default, Shortcuts limits how much Health data it passes to other apps. Either ask for fewer days of data, or turn on Settings → Apps → Shortcuts → Advanced → <strong>Allow Sharing Large Amounts of Data</strong>.</p>
+
+    <h2>"No Samples Found"</h2>
+    <p>Either there's no Health data of that kind yet, or Shortcuts wasn't given access to it. iOS only asks once; to turn access on later, open the Health app, tap your profile picture, then <strong>Apps › Shortcuts</strong>, and turn on the data the shortcut needs.</p>
+
+    <h2>"You've used today's 3 free runs."</h2>
+    <p>The free plan includes 3 runs a day from Shortcuts and widget refreshes, reset at midnight. GlueJS Unlimited removes the limit. The Playground in the app doesn't count.</p>
+
+    <h2>Saving an API key</h2>
+    <p>Run the "Set Up …" shortcut your agent made, check the sites listed in the confirmation and tap Set, then delete the setup shortcut. You can also add or edit keys in the app's Secrets tab.</p>
+
+    <h2>"Secret … can't be sent to …"</h2>
+    <p>The script tried to send a key to a site you didn't allow. If that site is correct, edit the key's allowed hosts in the Secrets tab. Keys only go over plain <code>http://</code> to hosts you listed as <code>http://name</code>.</p>
+
+    <h2>"No script named … in iCloud Drive › GlueJS › Scripts"</h2>
+    <p>Shortcuts that use the Run Script File action read the script from iCloud Drive. Make sure iCloud Drive is on for your iPhone and your Mac (same Apple Account), open GlueJS once on your iPhone so it creates its folder, and push the script again from your Mac. The Data tab lists the script files your iPhone can see.</p>
+
+    <h2>A widget isn't updating</h2>
+    <p>Widgets without a refresh interval only change when their shortcut runs again. Refreshing widgets update about as often as iOS allows, which can be less often than requested. The Data tab shows each widget's last update and any refresh error.</p>
+
+    <h2>Restoring or cancelling a subscription</h2>
+    <p>Tap Unlimited in the Runs tab, then Restore Purchases. To cancel, go to Settings → your name → Subscriptions.</p>
+
+    <h2>A script failed</h2>
+    <p>Open the Runs tab and tap the run: it shows the input, output, console messages and the line that failed. Share that with whoever wrote the script, or with your coding agent.</p>
+  </div>
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="index.html">Home</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></span>
+    </div>
+  </footer>
+</body>
+</html>

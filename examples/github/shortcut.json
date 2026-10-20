@@ -1,0 +1,9 @@
+{
+  "name": "GitHub Repo Check",
+  "color": "darkGray",
+  "actions": [
+    { "id": "repo", "type": "ask", "prompt": "Which repo (owner/name)?", "inputType": "Text", "default": "nodejs/node" },
+    { "id": "report", "type": "runScript", "script": "script.js", "input": "${repo}" },
+    { "type": "showResult", "text": "${report}" }
+  ]
+}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy · GlueJS</title>
+  <meta name="description" content="GlueJS has no server or analytics. Your scripts and Apple backup and sync settings control where your data goes.">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap narrow doc">
+    <header class="site-header">
+      <a class="brand" href="index.html"><img src="assets/apple-touch-icon.png" alt="">GlueJS</a>
+    </header>
+
+    <h1>Privacy Policy</h1>
+    <p class="updated">Effective October 13, 2026</p>
+
+    <p>GlueJS is made by Sirenia LLC ("we"), 404 Lafayette Rd, Sugar Hill, New Hampshire 03586, United States.</p>
+
+    <p><strong>The short version:</strong> GlueJS has no server, no account, no analytics, no advertising and no tracking. We don't receive your script data. Your scripts can send data to services you choose, and Apple stores backups, script files and secrets according to your backup, iCloud Drive and iCloud Keychain settings.</p>
+
+    <h2>What GlueJS stores on your iPhone</h2>
+    <ul>
+      <li><strong>Scripts and run history.</strong> The scripts your shortcuts run, the input Shortcuts passes to them, their output and console messages. Kept for up to 500 runs, in the app's storage on your device.</li>
+      <li><strong>Store and widget content.</strong> Values your scripts save with <code>Store</code> and <code>Widget</code>. A widget with automatic refresh also saves its script and input so it can run again.</li>
+      <li><strong>Secrets.</strong> API keys you choose to save, kept in your iCloud Keychain, which is end-to-end encrypted: Apple can't read it and neither can we. They sync to your other devices and come back on a new iPhone. If iCloud Keychain is off, they stay on this iPhone.</li>
+      <li><strong>Usage count.</strong> How many free runs you've used today, so the free plan's daily limit works.</li>
+    </ul>
+    <p>Store values, widget content (including saved refresh inputs) and local script files are eligible for your iCloud or computer backup, so they can come back when you restore a new iPhone. These can include data your shortcut supplied, such as Health data. Backup storage and encryption depend on your Apple and computer backup settings. Run history is excluded from backups. None of it is sent to us.</p>
+
+    <h2>Script files in iCloud Drive</h2>
+    <p>If you use script files, they're stored in the GlueJS folder of your own iCloud Drive, so edits made on your Mac reach your iPhone. Apple stores and syncs them under your Apple Account, as with any iCloud Drive file; we can't access them. If iCloud Drive is off, script files stay on your iPhone.</p>
+
+    <h2>Data you pass in from Shortcuts</h2>
+    <p>Shortcuts can pass data to GlueJS, including Health, calendar or location data you choose to include in a shortcut. GlueJS doesn't access HealthKit, your contacts, location, photos or other device data itself; Apple's Shortcuts app asks for those permissions and decides what to share. Your script processes data on your iPhone and can send it to an endpoint you choose. We don't receive, sell or use your Health data for advertising or marketing.</p>
+
+    <h2>When data leaves your iPhone</h2>
+    <p>A script you installed can send data over the internet or to devices on your home network, for example to fetch the weather or to call an API with a key you saved. Those requests go directly from your iPhone to the service the script contacts, whose own privacy policy then applies. GlueJS substitutes secret placeholders only for allowed hosts. If you enable raw access, scripts can read and send the value elsewhere; an allowed server can also return a key to a script. Only install scripts you trust. iOS asks before GlueJS can reach devices on your local network. Apple backup and sync also store data as described above.</p>
+
+    <h2>Purchases</h2>
+    <p>Subscriptions are handled by Apple. We don't receive your name, Apple ID or payment details. Apple tells the app on your device whether a subscription is active.</p>
+
+    <h2>Children</h2>
+    <p>GlueJS isn't directed at children under 13 and doesn't knowingly collect information from anyone.</p>
+
+    <h2>Deleting your data</h2>
+    <p>Delete runs, Store values, widgets and secrets in the app. Deleting a secret also deletes its synced iCloud Keychain copy. Delete script files in Files or iCloud Drive, and manage existing backups in your Apple or computer backup settings. Uninstalling GlueJS is not a way to erase all synced files, Keychain items or existing backups; remove those before uninstalling if desired. Because we don't hold your script data, there's nothing to request from us.</p>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be posted here with a new effective date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href="mailto:support@sireniallc.com">support@sireniallc.com</a>.</p>
+  </div>
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="index.html">Home</a> · <a href="terms.html">Terms</a> · <a href="support.html">Support</a></span>
+    </div>
+  </footer>
+</body>
+</html>

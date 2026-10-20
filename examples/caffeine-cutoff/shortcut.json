@@ -1,0 +1,9 @@
+{
+  "name": "Log Caffeine",
+  "color": "darkOrange",
+  "actions": [
+    { "id": "drink", "type": "ask", "prompt": "What did you have? (latte, espresso, cold brew, tea, or 150 mg)", "inputType": "Text", "default": "coffee" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${drink}" },
+    { "type": "notification", "title": "Caffeine", "body": "${result}" }
+  ]
+}

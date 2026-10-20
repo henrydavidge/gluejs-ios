@@ -1,0 +1,42 @@
+# GlueJS
+
+> GlueJS is an iPhone app that adds a "Run JavaScript" action to Apple Shortcuts. Coding agents (Claude Code, ChatGPT’s Codex and similar) write a script plus the shortcut around it on a Mac, build a signed .shortcut file, and the user installs it with one tap. Shortcuts supplies device data (Health, Calendar, Location…) and acts on results; GlueJS runs the code, with fetch, host-scoped secrets, a small key-value store and home-screen widgets. GlueJS has no device permissions and no server.
+
+Read the reference first. The tools are the `gluejs-ios` npm package; `npx gluejs-ios docs` prints the same reference.
+
+## Docs
+
+- [Reference](reference.md): script contract, runtime APIs, fetch/secrets rules, Store, Widget, shortcut.json format and builder actions, Shortcuts data recipes, limits, error messages, templates.
+- [Type definitions](gluejs.d.ts): `input`, `rawInput`, `sleep`, `Secrets`, `Store`, `Widget`.
+
+## Tools (npm: gluejs-ios; macOS 12+, Node 20+)
+
+- `npx gluejs-ios new <folder> --file`: start a new TypeScript script + shortcut (recommended); `--from <example>` copies an example
+- `npx gluejs-ios run <folder>/script.ts [input|@file]`: run a script on the Mac (Node; approximate)
+- `npx gluejs-ios build <folder>`: shortcut.json + script.ts/js → signed dist/<name>.shortcut (type-checks TS; pushes file-mode scripts)
+- `npx gluejs-ios push <folder>`: update a file-mode script on the phone via iCloud Drive, no reinstall
+- `npx gluejs-ios secret NAME --hosts host --ask`: one-time shortcut that saves an API key on the phone
+- `npx gluejs-ios examples`, `npx gluejs-ios docs [--types]`
+
+## Examples (`npx gluejs-ios new <folder> --from <name>`)
+
+- gym-visits: location trigger (Arrive automation) → Store → widget; silent on repeat arrivals ("when")
+- run-window: Calendar + Health distance + Apple Weather (hourly forecast, sunset) → best free hour → widget; no network
+- recipe-scaler: share sheet input (text or a recipe page URL → schema.org JSON-LD), clipboard fallback
+- caffeine-cutoff: Store log + half-life math, refreshing widget that skips logging on refresh (refreshingWidget)
+- aurora-alert: NOAA SWPC (OVATION, Kp) + Open-Meteo, notification only on good nights ("when"), once per night via Store
+- sourdough-starter: Store + refreshing widget with a time estimate
+- migraine-patterns: two shortcuts in one shortcut.json; logs Headache to Apple Health (logHealthSample), reads it back, Open-Meteo pressure history, on-device Apple Intelligence (useModel) writes the report
+- stock-portfolio: Finnhub quotes with a secret, holdings value/gain, once-a-day alerts via Store, refreshing widget
+- morning-briefing: Calendar (upcomingEvents/eventDetail) + Apple Weather → useModel (reference; Apple's Gallery has a similar Morning Report)
+- morning-check-in, sleep, heart-rate: Health data from Shortcuts actions → script → widget
+- habit-streak: Store + widget, no network
+- summarize: share sheet → fetch page → Claude API with a secret
+- weather: npm packages (zod, date-fns), self-refreshing widget
+- github: Octokit with an optional secret
+- release-watch: TypeScript, Store for "notify only when changed"
+
+## Optional
+
+- [Privacy policy](privacy.html)
+- [Support](support.html)

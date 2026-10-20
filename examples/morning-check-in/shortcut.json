@@ -1,0 +1,102 @@
+{
+  "name": "Morning Check-In",
+  "color": "green",
+  "actions": [
+    {
+      "id": "restingSamples",
+      "type": "findHealthSamples",
+      "healthType": "Resting Heart Rate",
+      "days": 21
+    },
+    {
+      "id": "resting",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${restingSamples}"
+    },
+    {
+      "id": "restingStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${restingSamples}"
+    },
+    {
+      "id": "restingStart",
+      "type": "formatDate",
+      "date": "${restingStartRaw}"
+    },
+    {
+      "id": "hrvSamples",
+      "type": "findHealthSamples",
+      "healthType": "Heart Rate Variability",
+      "days": 14
+    },
+    {
+      "id": "hrv",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${hrvSamples}"
+    },
+    {
+      "id": "hrvStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${hrvSamples}"
+    },
+    {
+      "id": "hrvStart",
+      "type": "formatDate",
+      "date": "${hrvStartRaw}"
+    },
+    {
+      "id": "sleepSamples",
+      "type": "findHealthSamples",
+      "healthType": "Sleep",
+      "days": 1
+    },
+    {
+      "id": "sleep",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${sleepSamples}"
+    },
+    {
+      "id": "sleepStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${sleepSamples}"
+    },
+    {
+      "id": "sleepStart",
+      "type": "formatDate",
+      "date": "${sleepStartRaw}"
+    },
+    {
+      "id": "sleepEndRaw",
+      "type": "healthSampleDetail",
+      "property": "End Date",
+      "from": "${sleepSamples}"
+    },
+    {
+      "id": "sleepEnd",
+      "type": "formatDate",
+      "date": "${sleepEndRaw}"
+    },
+    {
+      "id": "payload",
+      "type": "text",
+      "text": "<<<resting>>>\n${resting}\n<<<restingStart>>>\n${restingStart}\n<<<hrv>>>\n${hrv}\n<<<hrvStart>>>\n${hrvStart}\n<<<sleep>>>\n${sleep}\n<<<sleepStart>>>\n${sleepStart}\n<<<sleepEnd>>>\n${sleepEnd}\n"
+    },
+    {
+      "id": "report",
+      "type": "runScript",
+      "script": "script.ts",
+      "input": "${payload}"
+    },
+    {
+      "type": "notification",
+      "title": "Morning check-in",
+      "body": "${report}"
+    }
+  ]
+}

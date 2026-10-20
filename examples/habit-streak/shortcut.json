@@ -1,0 +1,10 @@
+{
+  "name": "Did It",
+  "color": "yellow",
+  "actions": [
+    { "type": "comment", "text": "Change the text below to your habit. Duplicate this shortcut for each habit." },
+    { "id": "habit", "type": "text", "text": "Workout" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${habit}" },
+    { "type": "notification", "title": "Did It", "body": "${result}" }
+  ]
+}

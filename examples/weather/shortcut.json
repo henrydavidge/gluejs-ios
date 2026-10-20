@@ -1,0 +1,9 @@
+{
+  "name": "Umbrella Check",
+  "color": "lightBlue",
+  "actions": [
+    { "id": "city", "type": "ask", "prompt": "Which city?", "inputType": "Text", "default": "San Francisco" },
+    { "id": "report", "type": "runScript", "script": "script.js", "input": "${city}" },
+    { "type": "showResult", "text": "${report}" }
+  ]
+}

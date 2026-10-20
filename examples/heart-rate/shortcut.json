@@ -1,0 +1,91 @@
+{
+  "name": "Heart Rate Check",
+  "color": "red",
+  "actions": [
+    {
+      "id": "todaySamples",
+      "type": "findHealthSamples",
+      "healthType": "Heart Rate",
+      "days": 1
+    },
+    {
+      "id": "todayVal",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${todaySamples}"
+    },
+    {
+      "id": "todayStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${todaySamples}"
+    },
+    {
+      "id": "todayStart",
+      "type": "formatDate",
+      "date": "${todayStartRaw}"
+    },
+    {
+      "id": "restingSamples",
+      "type": "findHealthSamples",
+      "healthType": "Resting Heart Rate",
+      "days": 35
+    },
+    {
+      "id": "restingVal",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${restingSamples}"
+    },
+    {
+      "id": "restingStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${restingSamples}"
+    },
+    {
+      "id": "restingStart",
+      "type": "formatDate",
+      "date": "${restingStartRaw}"
+    },
+    {
+      "id": "hrvSamples",
+      "type": "findHealthSamples",
+      "healthType": "Heart Rate Variability",
+      "days": 35
+    },
+    {
+      "id": "hrvVal",
+      "type": "healthSampleDetail",
+      "property": "Value",
+      "from": "${hrvSamples}"
+    },
+    {
+      "id": "hrvStartRaw",
+      "type": "healthSampleDetail",
+      "property": "Start Date",
+      "from": "${hrvSamples}"
+    },
+    {
+      "id": "hrvStart",
+      "type": "formatDate",
+      "date": "${hrvStartRaw}"
+    },
+    {
+      "id": "payload",
+      "type": "text",
+      "text": "<<<today>>>\n${todayVal}\n<<<todayStart>>>\n${todayStart}\n<<<resting>>>\n${restingVal}\n<<<restingStart>>>\n${restingStart}\n<<<hrv>>>\n${hrvVal}\n<<<hrvStart>>>\n${hrvStart}\n"
+    },
+    {
+      "id": "report",
+      "type": "runScript",
+      "script": "script.js",
+      "input": "${payload}"
+    },
+    {
+      "type": "notification",
+      "title": "Heart rate",
+      "body": "${report}"
+    }
+  ]
+}

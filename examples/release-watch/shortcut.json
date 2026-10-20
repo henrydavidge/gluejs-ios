@@ -1,0 +1,22 @@
+{
+  "name": "New Release Check",
+  "color": "green",
+  "actions": [
+    {
+      "id": "repo",
+      "type": "text",
+      "text": "nodejs/node"
+    },
+    {
+      "id": "report",
+      "type": "runScript",
+      "script": "script.ts",
+      "input": "${repo}"
+    },
+    {
+      "type": "notification",
+      "title": "GitHub releases",
+      "body": "${report}"
+    }
+  ]
+}
