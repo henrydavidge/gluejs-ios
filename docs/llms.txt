@@ -9,7 +9,7 @@ Read the reference first. The tools are the `gluejs-ios` npm package; `npx gluej
 - [Reference](reference.md): script contract, runtime APIs, fetch/secrets rules, Store, Widget, shortcut.json format and builder actions, Shortcuts data recipes, limits, error messages, templates.
 - [Type definitions](gluejs.d.ts): `input`, `rawInput`, `sleep`, `Secrets`, `Store`, `Widget`.
 
-## Tools (npm: gluejs-ios; macOS 12+, Node 20+)
+## Tools (npm: gluejs-ios, source: https://github.com/henrydavidge/gluejs-ios; macOS 12+, Node 20+)
 
 - `npx gluejs-ios new <folder> --file`: start a new TypeScript script + shortcut (recommended); `--from <example>` copies an example
 - `npx gluejs-ios run <folder>/script.ts [input|@file]`: run a script on the Mac (Node; approximate)
