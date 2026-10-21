@@ -36,6 +36,8 @@ npx gluejs-ios@latest build my-thing                      # -> my-thing/dist/<sh
 - Run them from any directory; paths are relative to it. The output is
   `<folder>/dist/<the shortcut's "name">.shortcut` (e.g. `my-thing/dist/Moon Phase.shortcut`;
   the build prints the full path), plus an unsigned copy in `dist/unsigned/`.
+- The signed file is in Apple's signed `AEA1` format, so `plutil` can't read it; to inspect what
+  you built, use the unsigned copy: `plutil -p "my-thing/dist/unsigned/<name>.shortcut"`.
 - In a project you'll come back to, `npm install --save-dev gluejs-ios` once and drop `@latest`.
 - `npx gluejs-ios examples` lists working examples; `npx gluejs-ios new my-thing --from <example>`
   copies one to start from. Add `dist/` to `.gitignore`.
