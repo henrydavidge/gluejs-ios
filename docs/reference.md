@@ -3,7 +3,7 @@
 GlueJS is an iPhone app that adds one Shortcuts action, **Run JavaScript**, plus **Save Secret**.
 You (the agent) write a script and the shortcut around it on a Mac, build a signed `.shortcut`,
 and the user installs it with one tap. This document is the complete contract. Type definitions:
-[`gluejs.d.ts`](gluejs.d.ts). Everything here was verified on iOS 27 unless marked *unverified*.
+[`gluejs.d.ts`](https://raw.githubusercontent.com/henrydavidge/gluejs-ios/main/docs/gluejs.d.ts) (`new` also writes a copy into each folder). Everything here was verified on iOS 27 unless marked *unverified*.
 
 The tools are the **`gluejs-ios`** npm package (`npx gluejs-ios --help`). It bundles and
 type-checks scripts, builds signed `.shortcut` files, and ships this document
@@ -29,7 +29,7 @@ The tools are the npm package **`gluejs-ios`**. (Not `gluejs`: that's an unrelat
 
 ```bash
 npx gluejs-ios@latest new my-thing                        # my-thing/: script.ts, shortcut.json, tsconfig.json, gluejs.d.ts, package.json
-npx gluejs-ios@latest run my-thing/script.ts '"hello"'    # type-check + run on the Mac (input: JSON, text or @file)
+npx gluejs-ios@latest run my-thing/script.ts 'hello'      # type-check + run on the Mac (input: text, JSON or @file)
 npx gluejs-ios@latest build my-thing                      # -> my-thing/dist/<shortcut name>.shortcut (signed)
 ```
 
@@ -272,7 +272,7 @@ Widget.names();
   "color": "lightBlue",
   "actions": [
     { "id": "city", "type": "ask", "prompt": "Which city?", "inputType": "Text", "default": "Seattle" },
-    { "id": "report", "type": "runScript", "script": "script.js", "input": "${city}" },
+    { "id": "report", "type": "runScript", "script": "script.ts", "input": "${city}" },
     { "type": "notification", "title": "Weather", "body": "${report}" }
   ]
 }
@@ -288,6 +288,9 @@ Widget.names();
   `${shortcutInput}` (the shortcut's own input, e.g. from the share sheet). `${…}` inside
   script files is never touched.
 - Actions run top to bottom; reference only earlier ids.
+- `runScript`'s `script` is a path relative to the folder (`script.ts` or `script.js`); `input`
+  is optional (the script then gets `null`). Fields that take a single variable
+  (`copyToClipboard`, `quickLook`, `from`) need exactly `${id}`; build combined text in the script.
 - Any action can take `"when": "${id}"`: it then runs only if that output isn't empty text
   (built as If … is not "" / End If; verified). Return `''` from a script to skip a notification:
   `{ "type": "notification", "body": "${alert}", "when": "${alert}" }`. (Shortcuts' own "has any
@@ -305,6 +308,8 @@ Widget.names();
   "input": { "shareSheet": true, "quickAction": true, "accepts": ["text", "url", "webPage"], "ifEmpty": "clipboard" }
   ```
 
+  All keys are optional (`shareSheet` and `quickAction` default to false; without `ifEmpty`, a
+  run with no input passes an empty input).
   - `shareSheet`: listed in the share sheet's actions (Share → scroll down). This is how a user
     sends highlighted text or the page they're reading to a script.
   - `quickAction`: Mac right-click → Quick Actions / Services. *Shown on import; Mac behavior unverified.*
@@ -465,8 +470,9 @@ Get Current Location `is.workflow.actions.getcurrentlocation`, Get Clipboard
    Copy to Clipboard asks once too; skip it unless the user needs it.
 4. Free plan: 3 runs/day from Shortcuts and widget refreshes, then
    *"You've used today's 3 free runs. Get GlueJS Unlimited…"*. The Playground and Run Again in
-   the app are free. A self-refreshing widget (`refresh`) uses several runs a day, so it needs
-   GlueJS Unlimited ($4.99/year); say so when you build one.
+   the app are free. Every run counts: each share-sheet use, each automation run and each widget
+   refresh. A widget with `refresh: 720` or more fits the free plan; more frequent refreshes, or
+   a shortcut used many times a day, need GlueJS Unlimited ($4.99/year). Say so when you build one.
 5. Automations must be run by hand once first, or they stall on these prompts.
 6. **Triggers** (arriving somewhere, time of day, alarm stopped, opening an app, NFC tag, Focus)
    are automations, which a `.shortcut` file can't contain. Tell the user the exact steps, e.g.
@@ -481,6 +487,10 @@ Get Current Location `is.workflow.actions.getcurrentlocation`, Get Clipboard
   GlueJS › Scripts"* (not pushed, or iCloud Drive off), *"x.js is still downloading from iCloud"*
   (retry). The Data tab lists the
   script files the phone sees and where it reads them from.
+- `gluejs-ios run <script> <input>` passes `<input>` exactly as the action's input text would
+  arrive from Shortcuts, so test with what Shortcuts really sends: `'Ada'`, a bare URL, or JSON
+  such as `'{"days": 7}'` (quoting it as `'"Ada"'` passes the quotes too). `@file` reads the input
+  from a file, which is easiest for multi-line `<<<section>>>` payloads.
 - `gluejs-ios run` executes in **Node**, not JavaScriptCore: it has Node globals and no secret host
   policy, http(s)-only check, or size limits. Secrets come from `GLUE_SECRET_<NAME>` env vars;
   as on the phone, `Secrets.get` returns a placeholder that `fetch` fills in, and values are hidden

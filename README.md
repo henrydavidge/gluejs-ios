@@ -6,7 +6,7 @@ agent writes the script and the shortcut around it, and you install the result w
 
 ```bash
 npx gluejs-ios new my-thing --file             # script.ts, shortcut.json, tsconfig.json, gluejs.d.ts
-npx gluejs-ios run my-thing/script.ts '"hi"'   # type-check and run on the Mac
+npx gluejs-ios run my-thing/script.ts 'hi'     # type-check and run on the Mac
 npx gluejs-ios build my-thing                  # -> dist/<name>.shortcut, signed
 npx gluejs-ios push my-thing                   # later edits reach the phone without reinstalling
 npx gluejs-ios secret API_KEY --hosts api.example.com --ask

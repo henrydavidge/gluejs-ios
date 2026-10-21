@@ -31,7 +31,7 @@ const COMMANDS = {
   secret: './setup-secret.mjs',
 };
 
-let showStack = Boolean(process.env.GLUE_DEBUG);
+let showStack = false;
 
 export async function main(argv = process.argv.slice(2)) {
   const [command, ...rest] = argv;
@@ -57,7 +57,12 @@ export async function main(argv = process.argv.slice(2)) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   main().catch((error) => {
-    console.error(showStack ? error.stack : error.message);
+    if (process.env.GLUE_DEBUG || !showStack) console.error(process.env.GLUE_DEBUG ? error.stack : error.message);
+    else {
+      // A failing script: the error, then only the frames inside the script (not Node's internals).
+      const frames = String(error.stack ?? '').split('\n').slice(1).filter((l) => /<anonymous>|eval at|\.(js|ts):\d+:\d+\)?$/.test(l) && !/node_modules|run-local\.mjs:|cli\.mjs:|bundle\.mjs:/.test(l.replace(/\(eval at [^)]*\), /, '('))).slice(0, 3);
+      console.error([`${error.name ?? 'Error'}: ${error.message}`, ...frames.map((l) => l.trim().replace(/^at (?:async )?eval \(eval at [^)]*\), (.*)\)$/, 'at $1'))].join('\n    '));
+    }
     process.exit(1);
   });
 }

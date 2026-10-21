@@ -13,7 +13,7 @@
 
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 import { loadScript } from './bundle.mjs';
 import { realpathSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
@@ -102,7 +102,17 @@ export async function main(argv = process.argv.slice(2)) {
   const fn = new AsyncFunction('input', 'rawInput', 'refreshingWidget', 'Secrets', 'Store', 'Widget', 'sleep', 'fetch', source);
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   // GLUE_REFRESHING_WIDGET=<name> simulates a widget refresh run.
-  const result = await fn(input, rawInput ?? null, process.env.GLUE_REFRESHING_WIDGET || null, Secrets, Store, Widget, sleep, localFetch);
+  let result;
+  try {
+    result = await fn(input, rawInput ?? null, process.env.GLUE_REFRESHING_WIDGET || null, Secrets, Store, Widget, sleep, localFetch);
+  } catch (error) {
+    // Plain scripts run as written, after Node's two-line function header: point at the file's
+    // own lines. (Bundled scripts' lines are in the bundle.)
+    if (error instanceof Error && source === readFileSync(file, 'utf8')) {
+      error.stack = String(error.stack).replace(/<anonymous>:(\d+):(\d+)/g, (_, line, col) => `${basename(file)}:${line - 2}:${col}`);
+    }
+    throw error;
+  }
   if (result !== undefined && result !== null) {
     // As on the phone, secret values and placeholders never appear in the output.
     let text = typeof result === 'string' ? result : JSON.stringify(result, null, 2);

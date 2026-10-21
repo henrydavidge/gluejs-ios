@@ -2,7 +2,7 @@
 
 > GlueJS is an iPhone app (by Sirenia LLC) that adds a "Run JavaScript" action to Apple Shortcuts. An AI writes a small script plus the shortcut around it, the `gluejs-ios` tools on a Mac build a signed .shortcut file, and the user taps Add Shortcut. Shortcuts supplies device data (Health, Calendar, Weather, Location, the share sheet) and acts on the result; the script does the logic, with fetch, API keys limited to chosen sites, a key-value Store and Home Screen widgets that can refresh themselves.
 
-This page is the quick start. The complete contract is [reference.md](https://gluejs.sireniallc.com/reference.md); types are [gluejs.d.ts](https://gluejs.sireniallc.com/gluejs.d.ts).
+This page is the quick start. The complete contract is [reference.md](https://gluejs.sireniallc.com/reference.md); types are [gluejs.d.ts](https://raw.githubusercontent.com/henrydavidge/gluejs-ios/main/docs/gluejs.d.ts) (also written into each folder by `new`).
 
 ## Quick start
 
@@ -11,9 +11,11 @@ Tools: the npm package **gluejs-ios** (not "gluejs", which is an unrelated packa
 ```bash
 npx gluejs-ios@latest new hello                         # creates hello/ with script.ts and shortcut.json
 # write hello/script.ts and hello/shortcut.json (below)
-npx gluejs-ios@latest run hello/script.ts '"Ada"'       # runs it on the Mac with the phone's APIs mocked
+npx gluejs-ios@latest run hello/script.ts 'Ada'         # runs it on the Mac with the phone's APIs mocked
 npx gluejs-ios@latest build hello                       # -> hello/dist/<shortcut name>.shortcut, signed
 ```
+
+`run` passes its argument as the input text exactly as Shortcuts would (`'Ada'`, a URL, or JSON like `'{"days": 7}'`); `@file` reads it from a file.
 
 The user then opens that file on the Mac (it syncs to the iPhone) or AirDrops it, taps Add Shortcut, and runs it once by hand to answer the permission prompts.
 
@@ -47,6 +49,7 @@ If you can't run commands (a chat assistant): give the user both files in full a
 
 - Globals: `input` (the action's input, JSON-parsed when possible), `rawInput`, `fetch`, `Secrets.get('NAME')`, `Store.get/set`, `Widget.set(name, content, { refresh })`, `console.log` (goes to the run log). No Node APIs, no DOM. Scripts that import npm packages use `export default async function main(input) { ... }` instead.
 - Device data comes from Shortcuts actions in shortcut.json, passed to the script as text: `findHealthSamples` + `healthSampleDetail`, `upcomingEvents` + `eventDetail`, `weatherForecast` + `weatherDetail`, `formatDate` (ISO 8601). Other actions: `text`, `ask`, `showResult`, `notification`, `copyToClipboard`, `quickLook`, `comment`, `useModel` (Apple Intelligence), `logHealthSample`, `saveSecret`, `raw` (any Shortcuts action). Any action can take `"when": "${id}"` to run only if that output isn't empty. Several lists go to one script as `<<<name>>>` sections in a `text` action.
+- Share sheet: add `"input": { "shareSheet": true, "accepts": ["url", "webPage", "text"] }` and use `"input": "${shortcutInput}"` on runScript. A shared Safari page arrives as its URL (a string), not its text; fetch it if you need the content. Add `{ "type": "copyToClipboard", "value": "${result}" }` to copy the output. The `recipe-scaler` example does this.
 - Widgets: name 1–40 letters, numbers, spaces, `. - _`. Content `{ title, value, detail, tint }` or `{ title, items: [{ label, value }], detail, tint }`. `refresh` is minutes (15–1440) and re-runs the script with the same input. Each refresh is one run; the free plan is 3 runs a day, so use `refresh: 720` or more (or a daily automation) unless the user has GlueJS Unlimited.
 - Keep the script inside the shortcut (the default). `"mode": "file"` reads it from iCloud Drive instead, so `npx gluejs-ios push` can update it without reinstalling; that needs GlueJS opened once on the iPhone.
 - Health: steps, distance and energy are recorded by both the iPhone and an Apple Watch, so de-duplicate (§8); a week of samples can hit Shortcuts' sharing limit (the user can allow large amounts in Settings › Apps › Shortcuts › Advanced).
