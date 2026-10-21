@@ -50,6 +50,12 @@ in a new folder: `npx gluejs-ios@latest new my-thing`, write the two files into 
 (e.g. with `cat > my-thing/script.ts <<'EOF' … EOF`), then `run` and `build` as above. Use inline
 mode, and ask the user to paste back any error output. Keep the files small and self-contained.
 
+**In a sandboxed agent** (e.g. Codex's default sandbox): `build` needs network access and must
+run outside the sandbox, because signing talks to Apple's service; inside it, `shortcuts sign`
+reports every file as "isn't in the correct format". Ask the user to approve running the build
+with full access, or build with `--no-sign` and give the user the `shortcuts sign` command the
+tool prints. If npx can't write its cache, prefix commands with `npm_config_cache=./.npm-cache`.
+
 **Inline or file mode:**
 - **Inline** (the default, `mode` omitted): the whole script is inside the shortcut. Use it for
   a user's first shortcut and for shortcuts they'll share with other people.
@@ -393,7 +399,8 @@ Health app label): `Heart Rate`, `Resting Heart Rate`, `Heart Rate Variability`,
 - Quantity `Value` lines are numbers; `Name` is `"56 count/min"`; `Unit` e.g. `count/min`.
 - `days: N` means start date in the last N days. The window starts at local midnight N days ago,
   so `days: 7` on a Tuesday covers the previous Tuesday through today so far (7 full days plus
-  today). Group by calendar day in the script and treat today as partial.
+  today), and `days: 6` gives exactly 7 calendar days including today. Group by calendar day in
+  the script and treat today as partial.
 - **Steps, distance, energy, flights:** the iPhone and an Apple Watch both record the same walk,
   so adding up raw samples double-counts. Include `Source` (`healthSampleDetail`) and, for each
   hour, keep only the source with the larger total, then add up the hours. These types produce

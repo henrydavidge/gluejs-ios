@@ -39,6 +39,8 @@ shortcut.json lists the Shortcuts actions; `${id}` inserts an earlier action's o
 }
 ```
 
+Signing contacts Apple, so in a sandboxed agent (e.g. Codex) run `build` outside the sandbox (ask the user to approve it), or use `--no-sign` and give the user the printed `shortcuts sign` command.
+
 If you can't run commands (a chat assistant): give the user both files in full and the three commands above to paste into Terminal, in a new folder, writing each file with `cat > hello/script.ts <<'EOF' ... EOF`. Ask them to paste back any error.
 
 ## Essentials

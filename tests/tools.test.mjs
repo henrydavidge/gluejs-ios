@@ -478,3 +478,19 @@ test('examples lists each example with its whole opening sentence', () => {
   const out = execFileSync(process.execPath, [join(root, 'cli.mjs'), 'examples'], { encoding: 'utf8' });
   assert.match(out, /aurora-alert\s+Aurora Alert: .*visible from where you are AND it's dark/);
 });
+
+test('a signing failure inside a sandbox explains itself and gives the manual command', async () => {
+  const { sign } = await import('../build-shortcut.mjs');
+  const folder = mkdtempSync(join(tmpdir(), 'glue-sign-sandbox-'));
+  const previous = process.env.PATH;
+  try {
+    // A fake `shortcuts` that fails the way it does inside Codex's sandbox.
+    writeFileSync(join(folder, 'shortcuts'), "#!/bin/sh\necho \"Error: The file couldn't be opened because it isn't in the correct format.\" >&2\nexit 1\n", { mode: 0o755 });
+    process.env.PATH = `${folder}:${previous}`;
+    assert.throws(() => sign(join(folder, 'in.shortcut'), join(folder, 'out.shortcut')),
+      /outside the sandbox[\s\S]*shortcuts sign --mode anyone --input ".*in\.shortcut" --output ".*out\.shortcut"/);
+  } finally {
+    process.env.PATH = previous;
+    rmSync(folder, { recursive: true });
+  }
+});

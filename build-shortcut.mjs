@@ -624,13 +624,19 @@ export function sign(unsigned, signed) {
       throw new Error('Signing needs the `shortcuts` command, which comes with macOS 12 or later. On another system, build with --no-sign and sign on a Mac.');
     }
     const output = `${error.stdout ?? ''}${error.stderr ?? ''}`.trim();
+    const manual = `The unsigned file is ${unsigned}. To sign it yourself, run:\n  shortcuts sign --mode anyone --input "${unsigned}" --output "${signed}"`;
+    // Inside an agent sandbox (Codex's default), `shortcuts sign` can't reach its helper service
+    // and reports every file as malformed, even ones that sign fine outside it.
+    if (process.env.CODEX_SANDBOX || /isn.t in the correct format|couldn.t be opened/i.test(output)) {
+      throw new Error(`shortcuts sign failed (${output.split('\n')[0] || error.message}). This usually means the build ran inside a sandbox that blocks Apple's signing service: run the build again outside the sandbox (in Codex, approve running it with full access), or build with --no-sign.\n${manual}`);
+    }
     if (/NSURLErrorDomain|\b50[0-4]\b|network|offline/i.test(output)) {
       throw new Error(`Apple's shortcut signing service didn't respond (${output.split('\n')[0]}). It's usually temporary: try again in a few minutes.`);
     }
     if (/iCloud|account|sign in/i.test(output)) {
       throw new Error(`Signing needs this Mac to be signed into iCloud (System Settings › Apple Account).\n${output}`);
     }
-    throw new Error(`shortcuts sign failed: ${output || error.message}`);
+    throw new Error(`shortcuts sign failed: ${output || error.message}\n${manual}`);
   }
 }
 
