@@ -25,7 +25,7 @@ Options:
   --ask                The shortcut asks for the value when run (nothing secret in the file)
   --from-env VAR       Read the value from VAR (default: the environment variable NAME)
   --raw                Let scripts read the raw value with Secrets.reveal
-  --out DIR            Output folder (default: dist)
+  --out DIR            Output folder (default: ./dist)
   --no-sign            Write the unsigned file only
   --team-id, --bundle-id, --app-name, --simulator   As for gluejs-ios build
   -h, --help           Show this help`;

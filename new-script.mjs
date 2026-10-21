@@ -49,7 +49,15 @@ export function examples() {
     .filter((entry) => entry.isDirectory() && existsSync(join(root, entry.name, 'shortcut.json')))
     .map((entry) => {
       const script = ['script.ts', 'script.js'].map((f) => join(root, entry.name, f)).find(existsSync);
-      const title = script ? /^\/\/\s*(.+)/.exec(readFileSync(script, 'utf8'))?.[1] ?? '' : '';
+      // The script's opening comment paragraph, joined into one line.
+      const lines = script ? readFileSync(script, 'utf8').split('\n') : [];
+      const paragraph = [];
+      for (const line of lines) {
+        const m = /^\s*\/\/\s?(.*)$/.exec(line);
+        if (!m || !m[1].trim()) break;
+        paragraph.push(m[1].trim());
+      }
+      const title = paragraph.join(' ');
       return { name: entry.name, title, path: join(root, entry.name) };
     });
 }
@@ -106,7 +114,8 @@ export function main(argv = process.argv.slice(2)) {
   if (options.from && (options.name || options.js || options.file)) throw new Error('--from copies an example as it is; edit it afterwards instead of passing --name, --js or --file.');
   const dir = scaffold(rest[0], options);
   console.log(`Created ${dir}. Edit the script, then:\n  npx gluejs-ios run ${rest[0]}/${existsSync(join(dir, 'script.js')) ? 'script.js' : 'script.ts'} '<input>'\n  npx gluejs-ios build ${rest[0]}`);
-  const { dependencies } = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+  const manifest = join(dir, 'package.json');
+  const { dependencies } = existsSync(manifest) ? JSON.parse(readFileSync(manifest, 'utf8')) : {};
   if (dependencies) console.log(`It uses npm packages: run \`npm install\` in ${rest[0]} first.`);
 }
 

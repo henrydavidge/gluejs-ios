@@ -1,22 +1,60 @@
 # GlueJS
 
-> GlueJS is an iPhone app that adds a "Run JavaScript" action to Apple Shortcuts. Coding agents (Claude Code, ChatGPT’s Codex and similar) write a script plus the shortcut around it on a Mac, build a signed .shortcut file, and the user installs it with one tap. Shortcuts supplies device data (Health, Calendar, Location…) and acts on results; GlueJS runs the code, with fetch, host-scoped secrets, a small key-value store and home-screen widgets. GlueJS has no device permissions and no server.
+> GlueJS is an iPhone app (by Sirenia LLC) that adds a "Run JavaScript" action to Apple Shortcuts. An AI writes a small script plus the shortcut around it, the `gluejs-ios` tools on a Mac build a signed .shortcut file, and the user taps Add Shortcut. Shortcuts supplies device data (Health, Calendar, Weather, Location, the share sheet) and acts on the result; the script does the logic, with fetch, API keys limited to chosen sites, a key-value Store and Home Screen widgets that can refresh themselves.
 
-Read the reference first. The tools are the `gluejs-ios` npm package; `npx gluejs-ios docs` prints the same reference.
+This page is the quick start. The complete contract is [reference.md](https://gluejs.sireniallc.com/reference.md); types are [gluejs.d.ts](https://gluejs.sireniallc.com/gluejs.d.ts).
 
-## Docs
+## Quick start
 
-- [Reference](reference.md): script contract, runtime APIs, fetch/secrets rules, Store, Widget, shortcut.json format and builder actions, Shortcuts data recipes, limits, error messages, templates.
-- [Type definitions](gluejs.d.ts): `input`, `rawInput`, `sleep`, `Secrets`, `Store`, `Widget`.
+Tools: the npm package **gluejs-ios** (not "gluejs", which is an unrelated package). Needs a Mac with macOS 12+, signed into iCloud (for signing), and Node 20+. No install step; npx fetches it:
 
-## Tools (npm: gluejs-ios, source: https://github.com/henrydavidge/gluejs-ios; macOS 12+, Node 20+)
+```bash
+npx gluejs-ios@latest new hello                         # creates hello/ with script.ts and shortcut.json
+# write hello/script.ts and hello/shortcut.json (below)
+npx gluejs-ios@latest run hello/script.ts '"Ada"'       # runs it on the Mac with the phone's APIs mocked
+npx gluejs-ios@latest build hello                       # -> hello/dist/<shortcut name>.shortcut, signed
+```
 
-- `npx gluejs-ios new <folder> --file`: start a new TypeScript script + shortcut (recommended); `--from <example>` copies an example
-- `npx gluejs-ios run <folder>/script.ts [input|@file]`: run a script on the Mac (Node; approximate)
-- `npx gluejs-ios build <folder>`: shortcut.json + script.ts/js → signed dist/<name>.shortcut (type-checks TS; pushes file-mode scripts)
-- `npx gluejs-ios push <folder>`: update a file-mode script on the phone via iCloud Drive, no reinstall
-- `npx gluejs-ios secret NAME --hosts host --ask`: one-time shortcut that saves an API key on the phone
-- `npx gluejs-ios examples`, `npx gluejs-ios docs [--types]`
+The user then opens that file on the Mac (it syncs to the iPhone) or AirDrops it, taps Add Shortcut, and runs it once by hand to answer the permission prompts.
+
+A script is the body of an async function (top-level await and return work, in .ts or .js):
+
+```ts
+// Hello: greets someone and shows it on a widget (this first comment line is the run-log title)
+const name = typeof input === 'string' && input.trim() ? input.trim() : 'world';
+Widget.set('Hello', { title: 'Greeting', value: name });   // optional Home Screen widget
+return `Hello, ${name}!`;                                   // becomes the action's output
+```
+
+shortcut.json lists the Shortcuts actions; `${id}` inserts an earlier action's output:
+
+```json
+{
+  "name": "Hello",
+  "actions": [
+    { "id": "who", "type": "ask", "prompt": "Who should I greet?" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${who}" },
+    { "type": "showResult", "text": "${result}" }
+  ]
+}
+```
+
+If you can't run commands (a chat assistant): give the user both files in full and the three commands above to paste into Terminal, in a new folder, writing each file with `cat > hello/script.ts <<'EOF' ... EOF`. Ask them to paste back any error.
+
+## Essentials
+
+- Globals: `input` (the action's input, JSON-parsed when possible), `rawInput`, `fetch`, `Secrets.get('NAME')`, `Store.get/set`, `Widget.set(name, content, { refresh })`, `console.log` (goes to the run log). No Node APIs, no DOM. Scripts that import npm packages use `export default async function main(input) { ... }` instead.
+- Device data comes from Shortcuts actions in shortcut.json, passed to the script as text: `findHealthSamples` + `healthSampleDetail`, `upcomingEvents` + `eventDetail`, `weatherForecast` + `weatherDetail`, `formatDate` (ISO 8601). Other actions: `text`, `ask`, `showResult`, `notification`, `copyToClipboard`, `quickLook`, `comment`, `useModel` (Apple Intelligence), `logHealthSample`, `saveSecret`, `raw` (any Shortcuts action). Any action can take `"when": "${id}"` to run only if that output isn't empty. Several lists go to one script as `<<<name>>>` sections in a `text` action.
+- Widgets: name 1–40 letters, numbers, spaces, `. - _`. Content `{ title, value, detail, tint }` or `{ title, items: [{ label, value }], detail, tint }`. `refresh` is minutes (15–1440) and re-runs the script with the same input. Each refresh is one run; the free plan is 3 runs a day, so use `refresh: 720` or more (or a daily automation) unless the user has GlueJS Unlimited.
+- Keep the script inside the shortcut (the default). `"mode": "file"` reads it from iCloud Drive instead, so `npx gluejs-ios push` can update it without reinstalling; that needs GlueJS opened once on the iPhone.
+- Health: steps, distance and energy are recorded by both the iPhone and an Apple Watch, so de-duplicate (§8); a week of samples can hit Shortcuts' sharing limit (the user can allow large amounts in Settings › Apps › Shortcuts › Advanced).
+- API keys: `npx gluejs-ios secret NAME --hosts api.example.com --ask` makes a setup shortcut; never put keys in files.
+- Scripts run in the iPhone's time zone and language; 25-second limit; errors stop the shortcut and appear in GlueJS › Runs with the line number.
+- `npx gluejs-ios docs` prints the full reference; `npx gluejs-ios examples` lists examples; `--help` on any command.
+
+## Tools (npm: gluejs-ios; source: https://github.com/henrydavidge/gluejs-ios)
+
+- `new <folder> [--file] [--from <example>]`, `run <script> [input|@file]`, `build <folder>`, `push <folder>`, `secret NAME --hosts host --ask`, `examples`, `docs [--types]`
 
 ## Examples (`npx gluejs-ios new <folder> --from <name>`)
 
@@ -38,5 +76,5 @@ Read the reference first. The tools are the `gluejs-ios` npm package; `npx gluej
 
 ## Optional
 
-- [Privacy policy](privacy.html)
-- [Support](support.html)
+- [Privacy policy](https://gluejs.sireniallc.com/privacy.html)
+- [Support](https://gluejs.sireniallc.com/support.html)

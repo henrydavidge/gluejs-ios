@@ -24,35 +24,47 @@ type-checks scripts, builds signed `.shortcut` files, and ships this document
 
 ## 2. Workflow
 
+The tools are the npm package **`gluejs-ios`**. (Not `gluejs`: that's an unrelated old package.)
+`npx` downloads them on first use, so nothing needs installing first:
+
 ```bash
-npm install --save-dev gluejs-ios                      # once per project (or use npx gluejs-ios@latest)
-npx gluejs-ios new my-thing --file                     # script.ts, shortcut.json, tsconfig.json, gluejs.d.ts
-npx gluejs-ios run my-thing/script.ts '<input>'        # type-check + run on the Mac (input: JSON/text/@file)
-npx gluejs-ios build my-thing                          # -> dist/<name>.shortcut (signed) + pushes the script
-# …user installs once; afterwards, for every edit:
-npx gluejs-ios push my-thing                           # updates the script on the phone; no reinstall
+npx gluejs-ios@latest new my-thing                        # my-thing/: script.ts, shortcut.json, tsconfig.json, gluejs.d.ts, package.json
+npx gluejs-ios@latest run my-thing/script.ts '"hello"'    # type-check + run on the Mac (input: JSON, text or @file)
+npx gluejs-ios@latest build my-thing                      # -> my-thing/dist/<shortcut name>.shortcut (signed)
 ```
 
-`npx gluejs-ios examples` lists working examples; `npx gluejs-ios new my-thing --from <example>`
-copies one to start from. Add `dist/` to `.gitignore`.
+- Run them from any directory; paths are relative to it. The output is
+  `<folder>/dist/<the shortcut's "name">.shortcut` (e.g. `my-thing/dist/Moon Phase.shortcut`;
+  the build prints the full path), plus an unsigned copy in `dist/unsigned/`.
+- In a project you'll come back to, `npm install --save-dev gluejs-ios` once and drop `@latest`.
+- `npx gluejs-ios examples` lists working examples; `npx gluejs-ios new my-thing --from <example>`
+  copies one to start from. Add `dist/` to `.gitignore`.
 
-Then tell the user: open `dist/<name>.shortcut` on the Mac (it syncs to the iPhone via iCloud)
-or AirDrop it, tap **Add Shortcut**, and **run it once by hand** before automating it
+Then tell the user: open `<folder>/dist/<name>.shortcut` on the Mac (it syncs to the iPhone via
+iCloud) or AirDrop it, tap **Add Shortcut**, and **run it once by hand** before automating it
 (first runs show one-time permission prompts; see §9).
 
-**Default to TypeScript and file mode** (`gluejs-ios new --file`):
-- **TypeScript** catches mistakes on the Mac before anything reaches the phone; see §3.
-- **File mode** (`"mode": "file"` on the runScript action) makes the shortcut run
-  `<name>.js` from iCloud Drive › GlueJS › Scripts instead of embedding the script. You install
-  the shortcut once; `gluejs-ios push` updates the script, and the next run (and refreshing
-  widgets) use the new version. Requires iCloud Drive on, with the iPhone and Mac on the same Apple
-  ID, and GlueJS opened once on the iPhone (that creates the folder;
-  `~/Library/Mobile Documents/iCloud~com~sireniallc~GlueJS/Documents/Scripts` on the Mac).
-  If that folder doesn't exist, the build fails with that explanation.
-- Use **inline mode** (the default when `mode` is omitted) for shortcuts the user will share
-  with other people, or when iCloud Drive isn't available: the whole script is in the shortcut.
-- Changing anything in `shortcut.json` (actions, input, name) still needs a rebuild and
-  reinstall; only the script file syncs.
+**If you can't run commands** (you're a chat assistant without access to the user's Mac): give the
+user the full contents of `script.ts` and `shortcut.json`, and these steps to paste into Terminal
+in a new folder: `npx gluejs-ios@latest new my-thing`, write the two files into `my-thing/`
+(e.g. with `cat > my-thing/script.ts <<'EOF' … EOF`), then `run` and `build` as above. Use inline
+mode, and ask the user to paste back any error output. Keep the files small and self-contained.
+
+**Inline or file mode:**
+- **Inline** (the default, `mode` omitted): the whole script is inside the shortcut. Use it for
+  a user's first shortcut and for shortcuts they'll share with other people.
+- **File** (`"mode": "file"` on the runScript action, or `new --file`): the shortcut runs
+  `<name>.js` from iCloud Drive › GlueJS › Scripts. You install the shortcut once; afterwards
+  `npx gluejs-ios push my-thing` updates the script and the next run (and refreshing widgets) use
+  the new version. Use it when you'll keep iterating. It needs iCloud Drive on, the iPhone and
+  Mac on the same Apple ID, and GlueJS opened once on the iPhone (that creates
+  `~/Library/Mobile Documents/iCloud~com~sireniallc~GlueJS/Documents/Scripts` on the Mac; the
+  build fails with that explanation if it's missing). `build` writes the script there; pass
+  `--no-push` to build without touching iCloud Drive.
+- Changing `shortcut.json` (actions, input, name) always needs a rebuild and reinstall.
+
+**TypeScript or JavaScript:** `new` writes TypeScript, which catches mistakes on the Mac before
+anything reaches the phone (§3). Both work everywhere.
 
 Requirements:
 - **Mac**: macOS 12 or later (for the `shortcuts` command that signs files), signed into iCloud
@@ -61,14 +73,16 @@ Requirements:
 - **iPhone**: GlueJS installed, iOS 18 or later. Apple Intelligence actions (`useModel`) need
   iOS 26+ on an Apple Intelligence iPhone; everything else here was verified on iOS 27.
 
-`gluejs-ios build` options (`--help` lists them): `--out DIR` (default `dist`), `--no-sign`,
+`gluejs-ios build` options (`--help` lists them): `--out DIR` (default `<folder>/dist`), `--no-sign`,
 `--no-push` (don't write file-mode scripts), `--no-typecheck`, `--minify`, `--scripts-dir DIR`
 (write file-mode scripts somewhere else, e.g. a Simulator's folder), `--simulator` (for a GlueJS
 built in the Simulator without a team). Unknown options are errors.
 
 ## 3. Script contract
 
-A script is the **body of an async function**: top-level `await` and `return` work.
+A script is the **body of an async function**: top-level `await` and `return` work. This works in
+`.js` and `.ts` files alike. (Scripts that `import` npm packages use the module form instead; see
+"Module scripts" below.)
 
 ```js
 // First comment line = title shown in GlueJS's run log.
@@ -94,10 +108,15 @@ return { ok: true };                // becomes the action's output
   seconds`. Synchronous infinite loops cannot be interrupted; never write unbounded loops.
 - Each run is a fresh JavaScriptCore context. No state survives except `Store` and widgets.
 
+- **Time zone and language:** scripts run with the iPhone's time zone and language, so
+  `new Date().getHours()` is local time and `toLocaleString()` uses the user's format. `gluejs-ios
+  run` uses the Mac's; set `TZ=Europe/Paris` to test another zone. Pass `'en-US'` explicitly for
+  output you parse later.
+
 ### TypeScript
 
-`.ts` scripts are always module scripts (below): `export default async function main(input: unknown)`.
-Plain-script top-level `return` isn't valid TypeScript. After bundling, the tools type-check with
+A `.ts` file can be written either way: as a plain script (top-level code and `return`, as above)
+or as a module (`export default async function main(input: unknown) { … }`). After bundling, the tools type-check with
 their own TypeScript using the `tsconfig.json` next to the script (written by `gluejs-ios new`;
 strict, `lib: ES2023 + DOM`, includes the folder's copy of `gluejs.d.ts`) or the same settings if
 there's none. Type errors fail the build with tsc's messages; `--no-typecheck` skips the check.
@@ -107,7 +126,7 @@ APIs GlueJS lacks (`document`, `XMLHttpRequest`, `Blob`, `FormData`): type-check
 ### Module scripts (npm)
 
 If the file contains `import`/`export` it is a module and must
-`export default async function main(input) { … }` (return value as above). Install packages
+`export default function main(input) { … }`, usually `async` (return value as above). Install packages
 next to it (`npm init -y && npm install <pkg>` in the script's folder). The builder bundles
 everything with esbuild (`platform: 'browser'`, target Safari 18, readable output) into one
 script; nothing is downloaded on the phone. Globals (`fetch`, `Secrets`, `Store`, `Widget`,
@@ -209,16 +228,29 @@ Widget.remove('Weather');
 Widget.names();
 ```
 
-- Unknown fields, bad tints, oversize strings → throws (so typos don't make blank widgets).
-  Numbers are accepted where strings are expected.
-- The user adds the **GlueJS** widget (small, medium, lock-screen rectangular) and picks the
-  name; if only one widget is published it's shown automatically.
+- **Names:** 1–40 characters: letters, numbers, spaces, `.`, `-`, `_` (no emoji; put emoji in
+  `title` or `value`). Publishing the same name again replaces that widget.
+- **Content:** `value` (+ optional `detail`) for one big number or phrase, or `items` (+ optional
+  `detail`) for a short list; `title` and `tint` with either. Unknown fields, bad tints, oversize
+  strings → throws (so typos don't make blank widgets). Numbers are accepted where strings are
+  expected.
+- **What shows where:** small: title, the value (shrinks to fit one line) or the first 4 items,
+  and up to 2 lines of detail; medium: the same with up to 6 items and 3 lines of detail; Lock
+  Screen (rectangular): the title and the value (or the first item). Keep `value` under ~12
+  characters for a small widget. Every widget shows when it was published.
+- **Adding it:** the user long-presses the Home Screen › **+** › **GlueJS**, picks a size, then
+  touch-and-holds the widget › **Edit Widget** › picks the name. If only one widget is published
+  it's shown automatically. A widget shows nothing until the shortcut has run once.
 - **Without `refresh`:** shows the last published content; update by running the shortcut again
   (e.g. a daily Shortcuts automation).
 - **With `refresh: N`:** the widget re-runs *this same script with this same input* roughly every
   N minutes (iOS decides exact timing; budget is a few dozen refreshes a day). Use it for web
   data. Data that came from Shortcuts (Health etc.) is frozen at the input of the publishing run.
-  Refresh runs count toward the free plan and have a 15 s limit. If a refresh fails or doesn't
+  Refresh runs count toward the free plan and have a 15 s limit. **Free plan (3 runs a day):** use
+  `refresh: 720` or more (about twice a day), or skip `refresh` and run the shortcut from a daily
+  automation. Anything more frequent needs GlueJS Unlimited; say so when you build it. A widget
+  that only depends on the date (a countdown, a moon phase) still needs a refresh or an
+  automation to move forward. If a refresh fails or doesn't
   call `Widget.set` for that name, the widget keeps the last content published and the app shows
   the error. A completed `Widget.set` remains even if the script fails later; script failures
   don't roll back Store writes, widget updates or network requests.
@@ -359,7 +391,17 @@ Health app label): `Heart Rate`, `Resting Heart Rate`, `Heart Rate Variability`,
   `Asleep`/`Asleep Unspecified`. **`Source` is empty for sleep**, so Watch and iPhone records
   can't be separated; dedupe by merging overlapping intervals.
 - Quantity `Value` lines are numbers; `Name` is `"56 count/min"`; `Unit` e.g. `count/min`.
-- `days: N` means start date in the last N days (window starts at local midnight N days ago).
+- `days: N` means start date in the last N days. The window starts at local midnight N days ago,
+  so `days: 7` on a Tuesday covers the previous Tuesday through today so far (7 full days plus
+  today). Group by calendar day in the script and treat today as partial.
+- **Steps, distance, energy, flights:** the iPhone and an Apple Watch both record the same walk,
+  so adding up raw samples double-counts. Include `Source` (`healthSampleDetail`) and, for each
+  hour, keep only the source with the larger total, then add up the hours. These types produce
+  many samples (Steps: often 100+ a day), so a week usually hits the sharing limit below; ask
+  for fewer days or tell the user about the setting.
+- `Value`, `Start Date` and `End Date` have a line for every sample, so those lists line up.
+  `Source` can be empty (always, for Sleep); check list lengths before pairing it with the others
+  and ignore it if they differ.
 - **Sharing limit:** with default settings Shortcuts refuses to pass more than roughly
   100–200 Health samples to another app: *"This action is trying to share 240 Health items,
   which is not allowed."* Fixes, in order of preference: query fewer days; or tell the user to

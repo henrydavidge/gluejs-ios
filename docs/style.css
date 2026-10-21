@@ -106,6 +106,8 @@ h2 { font-size: 30px; line-height: 1.2; letter-spacing: -0.01em; margin: 0 0 12p
 }
 .needs { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
 .needs li { margin-bottom: 6px; }
+.hero .ask { margin-top: 18px; font-size: 15px; opacity: 0.85; }
+.hero .ask q { font-style: italic; }
 .price { font-size: 34px; font-weight: 700; margin: 6px 0; }
 .note { color: var(--muted); font-size: 14px; }
 

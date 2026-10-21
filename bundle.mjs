@@ -60,10 +60,11 @@ export async function loadScript(path, { typecheck: check = true, minify = false
     throw error;
   }
   if (!isTypeScript(path) && !isModuleScript(source)) return source;
+  const plain = isTypeScript(path) ? await plainTypeScript(source) : null;
   // Bundle before type-checking: esbuild's messages about missing packages and Node built-ins
   // are clearer than the type errors the same problems cause.
-  const code = await bundle(path, { minify });
-  if (isTypeScript(path) && check) typecheck(path);
+  const code = await bundle(path, { minify, contents: plain });
+  if (isTypeScript(path) && check) typecheck(path, { contents: plain });
   if (code.length > LARGE_SCRIPT) {
     console.warn(`${basename(path)} bundles to ${Math.round(code.length / 1024)} KB, which makes the shortcut slow to open.` +
       (minify ? '' : ' Build with --minify, or') + ' use "mode": "file" so the code stays out of the shortcut.');
@@ -71,12 +72,29 @@ export async function loadScript(path, { typecheck: check = true, minify = false
   return code;
 }
 
+// TypeScript written as a plain script (top-level code and `return`, no import/export) runs as
+// the body of an async function, like a plain .js script. It's wrapped that way for esbuild and
+// tsc; the wrapper adds one line, which error messages take back out.
+const PLAIN_PREFIX = 'export default async function __glueScript(): Promise<unknown> {\n';
+
+/** The wrapped source if `source` is a plain TypeScript script, otherwise null. */
+export async function plainTypeScript(source) {
+  const wrapped = `${PLAIN_PREFIX}${source}\n}\n`;
+  try {
+    const esbuild = await import('esbuild');
+    await esbuild.transform(wrapped, { loader: 'ts', logLevel: 'silent' });
+    return wrapped;
+  } catch {
+    return null; // a module (import/export can't sit inside a function), or a syntax error esbuild will report
+  }
+}
+
 /**
  * Type-checks a TypeScript script with this package's TypeScript. Uses the tsconfig.json next
  * to the script if there is one (`gluejs-ios new` writes one), otherwise strict defaults plus
  * the packaged gluejs.d.ts. Throws with tsc's diagnostics on errors.
  */
-export function typecheck(path) {
+export function typecheck(path, { contents } = {}) {
   let tsc;
   try {
     const manifest = require.resolve('typescript/package.json');
@@ -87,7 +105,14 @@ export function typecheck(path) {
   const folder = dirname(resolve(path));
   let project = join(folder, 'tsconfig.json');
   let temp;
-  if (!existsSync(project)) {
+  if (contents) {
+    // A wrapped plain script: check the wrapper in a temporary project, with the script's name.
+    const types = packageFile(TYPES_FILE);
+    temp = mkdtempSync(join(tmpdir(), 'gluejs-tsc-'));
+    project = join(temp, 'tsconfig.json');
+    writeFileSync(join(temp, basename(path)), contents);
+    writeFileSync(project, JSON.stringify({ ...tsconfig(types), files: [join(temp, basename(path)), types] }));
+  } else if (!existsSync(project)) {
     const types = packageFile(TYPES_FILE);
     temp = mkdtempSync(join(tmpdir(), 'gluejs-tsc-'));
     project = join(temp, 'tsconfig.json');
@@ -96,7 +121,11 @@ export function typecheck(path) {
   try {
     execFileSync(process.execPath, [tsc, '--noEmit', '-p', project], { stdio: 'pipe' });
   } catch (error) {
-    const output = `${error.stdout ?? ''}${error.stderr ?? ''}`.trim();
+    let output = `${error.stdout ?? ''}${error.stderr ?? ''}`.trim();
+    if (contents) {
+      // Point at the user's file and line, not the temporary wrapper.
+      output = output.split(temp + '/').join('').replace(/\((\d+),(\d+)\)/g, (_, line, col) => `(${line - 1},${col})`);
+    }
     throw new Error(`Type errors in ${basename(path)}:\n${output || error.message}\n(Build with --no-typecheck to skip.)`);
   } finally {
     if (temp) rmSync(temp, { recursive: true, force: true });
@@ -123,7 +152,7 @@ export function tsconfig(types) {
   };
 }
 
-export async function bundle(entry, { minify = false } = {}) {
+export async function bundle(entry, { minify = false, contents = null } = {}) {
   let esbuild;
   try {
     esbuild = await import('esbuild');
@@ -134,7 +163,9 @@ export async function bundle(entry, { minify = false } = {}) {
   let result;
   try {
     result = await esbuild.build({
-      entryPoints: [resolve(entry)],
+      ...(contents
+        ? { stdin: { contents, loader: 'ts', resolveDir: dirname(resolve(entry)), sourcefile: basename(entry) } }
+        : { entryPoints: [resolve(entry)] }),
       bundle: true,
       write: false,
       format: 'iife',
@@ -154,7 +185,7 @@ export async function bundle(entry, { minify = false } = {}) {
       logLevel: 'silent',
     });
   } catch (error) {
-    throw new Error(describeBuildErrors(error, entry));
+    throw new Error(describeBuildErrors(error, entry, contents ? 1 : 0));
   }
 
   const code = result.outputFiles[0].text;
@@ -172,9 +203,9 @@ export async function bundle(entry, { minify = false } = {}) {
   ].join('\n');
 }
 
-function describeBuildErrors(error, entry) {
+function describeBuildErrors(error, entry, lineOffset = 0) {
   const messages = (error.errors ?? []).map((e) => {
-    const where = e.location ? `${e.location.file}:${e.location.line}` : basename(entry);
+    const where = e.location ? `${e.location.file}:${e.location.line - (e.location.file === basename(entry) ? lineOffset : 0)}` : basename(entry);
     const missing = /Could not resolve "([^"]+)"/.exec(e.text)?.[1];
     const builtin = missing?.replace(/^node:/, '').split('/')[0];
     if (missing && (NODE_BUILTINS.has(builtin) || missing.startsWith('node:'))) {

@@ -445,3 +445,36 @@ test('the npm package ships no installed dependencies from the examples', () => 
   assert.ok(paths.includes('docs/reference.md') && paths.includes('docs/gluejs.d.ts') && paths.includes('examples/recipe-scaler/script.ts'));
   assert.ok(pack.files.length < 150, `${pack.files.length} files`);
 });
+
+test('TypeScript written as a plain script (top-level return) runs like a .js plain script', async () => {
+  const folder = mkdtempSync(join(tmpdir(), 'glue-plain-ts-'));
+  try {
+    const path = join(folder, 'script.ts');
+    writeFileSync(path, "// Plain TS\nconst n: number = Number(input ?? 1);\nWidget.set('W', { value: n * 2 });\nreturn `double: ${n * 2}`;\n");
+    const source = await loadScript(path);
+    const Widget = { set() {} };
+    assert.equal(await new ((async () => {}).constructor)('input', 'Widget', source)(21, Widget), 'double: 42');
+    // Type errors point at the user's line, not the wrapper's.
+    writeFileSync(path, "const ok = 1;\nconst n: number = 'nope';\nreturn n;\n");
+    await assert.rejects(() => loadScript(path), /script\.ts\(2,7\): error TS2322/);
+    // Syntax errors too.
+    writeFileSync(path, "const ok = 1;\nconst = ;\nreturn ok;\n");
+    await assert.rejects(() => loadScript(path), /script\.ts:2/);
+  } finally { rmSync(folder, { recursive: true }); }
+});
+
+test('new --from works for examples without a package.json, and builds go to <folder>/dist', async () => {
+  const parent = mkdtempSync(join(tmpdir(), 'glue-from-js-'));
+  try {
+    execFileSync(process.execPath, [join(root, 'cli.mjs'), 'new', 'hr', '--from', 'heart-rate'], { cwd: parent, stdio: 'pipe' });
+    assert.ok(existsSync(join(parent, 'hr', 'script.js')));
+    execFileSync(process.execPath, [join(root, 'cli.mjs'), 'build', 'hr', '--no-sign'], { cwd: parent, stdio: 'pipe' });
+    assert.ok(readdirSync(join(parent, 'hr', 'dist', 'unsigned')).some((f) => f.endsWith('.shortcut')));
+    assert.equal(existsSync(join(parent, 'dist')), false);
+  } finally { rmSync(parent, { recursive: true }); }
+});
+
+test('examples lists each example with its whole opening sentence', () => {
+  const out = execFileSync(process.execPath, [join(root, 'cli.mjs'), 'examples'], { encoding: 'utf8' });
+  assert.match(out, /aurora-alert\s+Aurora Alert: .*visible from where you are AND it's dark/);
+});

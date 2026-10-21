@@ -29,7 +29,7 @@ Builds every shortcut in <folder>/shortcut.json into <out>/<name>.shortcut, sign
 iCloud Drive › GlueJS › Scripts.
 
 Options:
-  --out DIR            Output folder (default: dist)
+  --out DIR            Output folder (default: <folder>/dist)
   --no-sign            Write only the unsigned file (dist/unsigned/)
   --no-push            Don't write "mode": "file" scripts to iCloud Drive
   --no-typecheck       Skip TypeScript type-checking
@@ -121,7 +121,7 @@ const COLORS = {
 };
 
 export function parseArgs(argv) {
-  const args = { sign: true, typecheck: true, push: true, minify: false, out: 'dist', ...DEFAULTS };
+  const args = { sign: true, typecheck: true, push: true, minify: false, out: null, ...DEFAULTS };
   const rest = [];
   const explicit = new Set();
   for (let i = 0; i < argv.length; i++) {
@@ -145,6 +145,8 @@ export function parseArgs(argv) {
   }
   if (rest.length !== 1) throw new Error(`Expected one folder with a shortcut.json, got ${rest.length ? rest.join(' ') : 'none'}. See gluejs-ios build --help.`);
   args.folder = resolve(rest[0]);
+  // Next to the shortcut's files, so it's easy to find whichever directory the command ran in.
+  args.out = args.out ? resolve(args.out) : join(args.folder, 'dist');
   return args;
 }
 
