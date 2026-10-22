@@ -51,7 +51,8 @@
   "scripts": {
     "pretest": "npm install --silent --no-audit --no-fund --prefix examples/github && npm install --silent --no-audit --no-fund --prefix examples/weather",
     "test": "node --test tests/*.test.mjs",
-    "serve-docs": "node scripts/serve-docs.mjs"
+    "serve-docs": "node scripts/serve-docs.mjs",
+    "build-pages": "node scripts/build-pages.mjs"
   },
   "dependencies": {
     "esbuild": "^0.28.2",

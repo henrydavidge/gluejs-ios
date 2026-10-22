@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://gluejs.sireniallc.com/</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/llms.txt</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/reference.md</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/gluejs.d.ts</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/support.html</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/privacy.html</loc></url>
-  <url><loc>https://gluejs.sireniallc.com/terms.html</loc></url>
+  <url><loc>https://gluejs.sireniallc.com/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/gym-cost-per-visit.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/best-time-to-run.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/recipe-scaler.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/migraine-pressure-tracker.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/aurora-alert.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/stock-portfolio-widget.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/caffeine-tracker.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/examples/sourdough-starter-timer.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/llms.txt</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/reference.md</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/support.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/privacy.html</loc><lastmod>2026-10-22</lastmod></url>
+  <url><loc>https://gluejs.sireniallc.com/terms.html</loc><lastmod>2026-10-22</lastmod></url>
 </urlset>

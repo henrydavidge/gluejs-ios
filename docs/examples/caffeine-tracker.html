@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caffeine Tracker &amp; Sleep Cutoff Widget for iPhone · GlueJS</title>
+  <meta name="description" content="When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <link rel="canonical" href="https://gluejs.sireniallc.com/examples/caffeine-tracker.html">
+  <meta name="theme-color" content="#6d4aff">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GlueJS">
+  <meta property="og:title" content="Caffeine Tracker &amp; Sleep Cutoff Widget for iPhone · GlueJS">
+  <meta property="og:description" content="When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <meta property="og:url" content="https://gluejs.sireniallc.com/examples/caffeine-tracker.html">
+  <meta property="og:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Caffeine Tracker &amp; Sleep Cutoff Widget for iPhone · GlueJS">
+  <meta name="twitter:description" content="When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <meta name="twitter:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GlueJS","item":"https://gluejs.sireniallc.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://gluejs.sireniallc.com/examples/"},{"@type":"ListItem","position":3,"name":"Caffeine Tracker & Sleep Cutoff Widget for iPhone","item":"https://gluejs.sireniallc.com/examples/caffeine-tracker.html"}]},{"@context":"https://schema.org","@type":"TechArticle","headline":"Caffeine Tracker & Sleep Cutoff Widget for iPhone","description":"When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.","url":"https://gluejs.sireniallc.com/examples/caffeine-tracker.html","image":"https://gluejs.sireniallc.com/assets/og.jpg","inLanguage":"en","author":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"publisher":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"about":{"@type":"SoftwareApplication","name":"GlueJS","operatingSystem":"iOS","applicationCategory":"UtilitiesApplication","url":"https://gluejs.sireniallc.com/"}}]</script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="/"><img src="/assets/apple-touch-icon.png" alt="GlueJS app icon" width="34" height="34">GlueJS</a>
+      <nav>
+        <a href="/examples/">Examples</a>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/support.html">Support</a>
+      </nav>
+    </header>
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GlueJS</a> › <a href="/examples/">Examples</a> › Caffeine cutoff</nav>
+
+    <article class="example-page">
+      <span class="tag">Widget · Offline</span>
+      <h1>Caffeine Tracker & Sleep Cutoff Widget for iPhone</h1>
+      <p class="lede">A personal iPhone shortcut that GlueJS makes possible: no app to install beyond GlueJS, built by
+        your AI in a few minutes from one sentence.</p>
+
+      <div class="example">
+        <h2>What to ask for</h2>
+        <p class="ask">“When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget.”</p>
+        <h2>What you get</h2>
+        <div class="result"><b>☕ 210 mg</b><br>Sleep-friendly after 10:40 PM · 318 mg today</div>
+        <h2>How it works</h2>
+        <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Action button</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">“latte”</span><span class="d">Ask for input</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Log it, work out what's left</span><span class="d">5-hour half-life</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + notification</span><span class="d">Refreshes every 30 min</span></li>
+            </ol>
+        <dl>
+              <dt>Steps</dt><dd>GlueJS knows typical caffeine per drink, keeps two days in its Store, and recalculates on the widget every 30 minutes without logging anything new.</dd>
+              <dt>Connects to</dt><dd>Nothing. It works offline.</dd>
+              <dt>Keys &amp; cost</dt><dd>None.</dd>
+            </dl>
+      </div>
+
+      <section>
+        <h2>Build it</h2>
+        <p>On a Mac with an AI coding agent such as Claude Code or ChatGPT's Codex, say:</p>
+        <p class="ask">“Use GlueJS (gluejs.sireniallc.com) to make me a shortcut: When I log a coffee, tell me when I'll be under 50 mg so I can sleep, and keep it on a widget.”</p>
+        <p>Or start from this example and change it:</p>
+        <pre><code>npx gluejs-ios@latest new my-caffeine-tracker --from caffeine-cutoff
+npx gluejs-ios@latest build my-caffeine-tracker</code></pre>
+        <p>Open the <code>.shortcut</code> file it makes, tap <strong>Add Shortcut</strong> on your iPhone,
+          and run it once. The full source is on
+          <a href="https://github.com/henrydavidge/gluejs-ios/tree/main/examples/caffeine-cutoff">GitHub</a>, and
+          <a href="/llms.txt">llms.txt</a> has everything your AI needs.</p>
+      </section>
+
+      <section>
+        <h2>More things people build</h2>
+        <ul class="related">
+          <li><a href="/examples/gym-cost-per-visit.html">Gym Cost-Per-Visit Tracker for iPhone</a></li>
+          <li><a href="/examples/best-time-to-run.html">Best Time to Run Today: Calendar + Weather Shortcut</a></li>
+          <li><a href="/examples/recipe-scaler.html">Recipe Scaler Shortcut for iPhone</a></li>
+          <li><a href="/examples/migraine-pressure-tracker.html">Migraine & Barometric Pressure Tracker for iPhone</a></li>
+          <li><a href="/examples/aurora-alert.html">Northern Lights (Aurora) Alert for iPhone</a></li>
+          <li><a href="/examples/stock-portfolio-widget.html">Stock Portfolio Widget & Price Alerts for iPhone</a></li>
+          <li><a href="/examples/sourdough-starter-timer.html">Sourdough Starter Peak Timer Widget for iPhone</a></li>
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/support.html">Support</a> · <a href="/llms.txt">llms.txt</a> · <a href="https://github.com/henrydavidge/gluejs-ios">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

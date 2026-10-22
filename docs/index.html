@@ -3,28 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GlueJS: JavaScript for Apple Shortcuts</title>
-  <meta name="description" content="GlueJS adds a Run JavaScript action to Apple Shortcuts. Let an AI coding agent like Claude or ChatGPT write the script and the shortcut together, then install it with one tap.">
+  <title>GlueJS: JavaScript for Apple Shortcuts, Built by AI</title>
+  <meta name="description" content="GlueJS adds a Run JavaScript action to Apple Shortcuts, so Claude or ChatGPT can build personal iPhone shortcuts and widgets for you. Install with one tap.">
+  <meta name="theme-color" content="#6d4aff">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GlueJS">
   <meta property="og:title" content="GlueJS: JavaScript for Apple Shortcuts">
   <meta property="og:description" content="Code where Shortcuts gets clumsy: loops, APIs, data, widgets. Written by Claude or ChatGPT, installed with one tap.">
   <meta property="og:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
   <meta property="og:url" content="https://gluejs.sireniallc.com/">
   <link rel="canonical" href="https://gluejs.sireniallc.com/">
+  <meta property="og:image:alt" content="GlueJS: the glue code for Apple Shortcuts">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GlueJS: JavaScript for Apple Shortcuts">
+  <meta name="twitter:description" content="Code where Shortcuts gets clumsy: loops, APIs, data, widgets. Written by Claude or ChatGPT, installed with one tap.">
+  <meta name="twitter:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
   <link rel="icon" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="alternate" type="text/plain" title="Documentation for AI agents" href="llms.txt">
   <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "GlueJS", "alternateName": "GlueJS: Code for Shortcuts", "description": "GlueJS adds a Run JavaScript action to Apple Shortcuts, so an AI like Claude or ChatGPT can build personal iPhone shortcuts and Home Screen widgets for you.", "operatingSystem": "iOS 18.0 or later", "applicationCategory": "UtilitiesApplication", "url": "https://gluejs.sireniallc.com/", "image": "https://gluejs.sireniallc.com/assets/icon-512.png", "screenshot": "https://gluejs.sireniallc.com/assets/og.jpg", "publisher": {"@type": "Organization", "name": "Sirenia LLC", "url": "https://sireniallc.com/"}, "offers": [{"@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "3 runs a day, Playground always free"}, {"@type": "Offer", "name": "GlueJS Unlimited", "price": "4.99", "priceCurrency": "USD", "description": "Unlimited runs and self-refreshing widgets, billed yearly"}]}, {"@context": "https://schema.org", "@type": "WebSite", "name": "GlueJS", "url": "https://gluejs.sireniallc.com/", "publisher": {"@type": "Organization", "name": "Sirenia LLC", "url": "https://sireniallc.com/", "logo": "https://gluejs.sireniallc.com/assets/icon-512.png"}}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can Apple Shortcuts run JavaScript?", "acceptedAnswer": {"@type": "Answer", "text": "Only on web pages, on its own: Shortcuts' built-in Run JavaScript on Web Page action needs a Safari page from the share sheet. GlueJS adds a Run JavaScript action that works anywhere in a shortcut, on any input, with fetch for web APIs, saved values between runs and Home Screen widgets."}}, {"@type": "Question", "name": "Can ChatGPT or Claude make an Apple Shortcut for me?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. An AI coding agent on your Mac, such as Claude Code or ChatGPT's Codex, writes the script and the shortcut together with GlueJS's free gluejs-ios tools and builds a signed file you add with one tap. Just ask it to use GlueJS and point it at gluejs.sireniallc.com. A chat assistant can give you the files and commands to paste instead."}}, {"@type": "Question", "name": "Do I need to know how to code?", "acceptedAnswer": {"@type": "Answer", "text": "No. You describe what you want in a sentence and your AI writes the code. Every line stays visible in the Shortcuts editor and in GlueJS's run log, so you can always see what runs."}}, {"@type": "Question", "name": "How do I make a custom Home Screen widget with Shortcuts?", "acceptedAnswer": {"@type": "Answer", "text": "With GlueJS, a script publishes a number or a short list as a widget. Add the GlueJS widget to your Home Screen and choose it. Widgets can refresh themselves on a schedule, so a countdown, forecast or streak stays current."}}, {"@type": "Question", "name": "Can a shortcut use my Health data, calendar or location with GlueJS?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Shortcuts reads Health, Calendar, Weather and Location and asks your permission for each kind of data, then passes only what that shortcut uses to GlueJS. GlueJS itself requests no device permissions."}}, {"@type": "Question", "name": "Does GlueJS see or upload my data?", "acceptedAnswer": {"@type": "Answer", "text": "No. GlueJS has no account, no server, no analytics and no ads, and nothing is sent to us. A script only contacts the web services it was written to use, and API keys are sent only to the sites you allow."}}, {"@type": "Question", "name": "Is GlueJS free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. You get 3 runs a day from Shortcuts and widgets, and the in-app Playground is always free. GlueJS Unlimited gives you unlimited runs and widgets that refresh all day for $4.99 a year."}}, {"@type": "Question", "name": "What do I need?", "acceptedAnswer": {"@type": "Answer", "text": "An iPhone with iOS 18 or later and the GlueJS app. To have an AI build shortcuts for you: a Mac with Claude Code or ChatGPT's Codex, or any chat assistant that can give you the files and commands to paste."}}]}]</script>
 </head>
 <body>
   <div class="wrap">
     <header class="site-header">
-      <a class="brand" href="index.html"><img src="assets/apple-touch-icon.png" alt="">GlueJS</a>
+      <a class="brand" href="/"><img src="assets/apple-touch-icon.png" alt="GlueJS app icon" width="34" height="34">GlueJS</a>
       <nav>
-        <a href="#examples">Examples</a>
+        <a href="examples/">Examples</a>
         <a href="#how">How it works</a>
         <a href="#why">Why GlueJS</a>
         <a href="#agents">For AI agents</a>
+        <a href="#faq">FAQ</a>
         <a href="#pricing">Pricing</a>
         <a href="support.html">Support</a>
       </nav>
@@ -88,7 +97,7 @@ return `${streak} days in a row!`;</code></pre>
 
     <section id="examples">
       <h2>What people build</h2>
-      <p class="lede">Small, specific things no big app will ever make for you. Each one is a sentence to your coding agent; it writes the script and the shortcut, and you tap Add Shortcut. Your agent can start from any of them.</p>
+      <p class="lede">Small, specific things no big app will ever make for you. Each one is a sentence to your coding agent; it writes the script and the shortcut, and you tap Add Shortcut. Your agent can start from any of them. <a href="examples/">See all examples →</a></p>
       <div class="examples">
         <article class="example">
           <span class="tag">Location trigger</span>
@@ -110,6 +119,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Leaves your phone</dt><dd>Nothing. Your location is only used by iOS to trigger the automation; GlueJS never sees it.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/gym-cost-per-visit.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Calendar + Health + Weather</span>
@@ -133,6 +143,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Leaves your phone</dt><dd>Nothing.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/best-time-to-run.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Share sheet</span>
@@ -154,6 +165,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Keys &amp; cost</dt><dd>None.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/recipe-scaler.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">On-device AI · Health</span>
@@ -178,6 +190,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Needs</dt><dd>An iPhone with Apple Intelligence turned on. Switching the step to Private Cloud Compute or ChatGPT works too, but sends the summary off the phone. Not medical advice.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/migraine-pressure-tracker.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Public data</span>
@@ -199,6 +212,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Keys &amp; cost</dt><dd>None; both are free public services.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/aurora-alert.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Stocks · API key</span>
@@ -220,6 +234,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Keys &amp; cost</dt><dd>A free Finnhub key, saved in your iCloud Keychain by a one-tap setup shortcut; it can only be sent to finnhub.io.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/stock-portfolio-widget.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Widget · Offline</span>
@@ -240,6 +255,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Keys &amp; cost</dt><dd>None.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/caffeine-tracker.html">Build it: full guide →</a>
         </article>
         <article class="example">
           <span class="tag">Widget · Offline</span>
@@ -260,6 +276,7 @@ return `${streak} days in a row!`;</code></pre>
               <dt>Make it yours</dt><dd>Ask your agent to tune the timings after watching your own starter for a few days.</dd>
             </dl>
           </details>
+          <a class="guide" href="examples/sourdough-starter-timer.html">Build it: full guide →</a>
         </article>
       </div>
     </section>
@@ -286,6 +303,42 @@ return `${streak} days in a row!`;</code></pre>
         <div class="card"><h3><a href="https://raw.githubusercontent.com/henrydavidge/gluejs-ios/main/docs/gluejs.d.ts">gluejs.d.ts</a></h3><p>Type definitions for <code>Secrets</code>, <code>Store</code>, <code>Widget</code> and script input.</p></div>
         <div class="card"><h3><a href="https://www.npmjs.com/package/gluejs-ios">gluejs-ios</a></h3><p>The tools, from npm: <code>npx gluejs-ios new</code>, <code>run</code>, <code>build</code>. Type-checks, bundles and signs the shortcut. Open source on <a href="https://github.com/henrydavidge/gluejs-ios">GitHub</a>.</p></div>
       </div>
+    </section>
+
+    <section id="faq" class="faq">
+      <h2>Questions</h2>
+        <details>
+          <summary>Can Apple Shortcuts run JavaScript?</summary>
+          <p>Only on web pages, on its own: Shortcuts' built-in Run JavaScript on Web Page action needs a Safari page from the share sheet. GlueJS adds a Run JavaScript action that works anywhere in a shortcut, on any input, with fetch for web APIs, saved values between runs and Home Screen widgets.</p>
+        </details>
+        <details>
+          <summary>Can ChatGPT or Claude make an Apple Shortcut for me?</summary>
+          <p>Yes. An AI coding agent on your Mac, such as Claude Code or ChatGPT's Codex, writes the script and the shortcut together with GlueJS's free gluejs-ios tools and builds a signed file you add with one tap. Just ask it to use GlueJS and point it at gluejs.sireniallc.com. A chat assistant can give you the files and commands to paste instead.</p>
+        </details>
+        <details>
+          <summary>Do I need to know how to code?</summary>
+          <p>No. You describe what you want in a sentence and your AI writes the code. Every line stays visible in the Shortcuts editor and in GlueJS's run log, so you can always see what runs.</p>
+        </details>
+        <details>
+          <summary>How do I make a custom Home Screen widget with Shortcuts?</summary>
+          <p>With GlueJS, a script publishes a number or a short list as a widget. Add the GlueJS widget to your Home Screen and choose it. Widgets can refresh themselves on a schedule, so a countdown, forecast or streak stays current.</p>
+        </details>
+        <details>
+          <summary>Can a shortcut use my Health data, calendar or location with GlueJS?</summary>
+          <p>Yes. Shortcuts reads Health, Calendar, Weather and Location and asks your permission for each kind of data, then passes only what that shortcut uses to GlueJS. GlueJS itself requests no device permissions.</p>
+        </details>
+        <details>
+          <summary>Does GlueJS see or upload my data?</summary>
+          <p>No. GlueJS has no account, no server, no analytics and no ads, and nothing is sent to us. A script only contacts the web services it was written to use, and API keys are sent only to the sites you allow.</p>
+        </details>
+        <details>
+          <summary>Is GlueJS free?</summary>
+          <p>Yes. You get 3 runs a day from Shortcuts and widgets, and the in-app Playground is always free. GlueJS Unlimited gives you unlimited runs and widgets that refresh all day for $4.99 a year.</p>
+        </details>
+        <details>
+          <summary>What do I need?</summary>
+          <p>An iPhone with iOS 18 or later and the GlueJS app. To have an AI build shortcuts for you: a Mac with Claude Code or ChatGPT's Codex, or any chat assistant that can give you the files and commands to paste.</p>
+        </details>
     </section>
 
     <section id="pricing">

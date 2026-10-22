@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best Time to Run Today: Calendar + Weather Shortcut · GlueJS</title>
+  <meta name="description" content="Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too. Built with GlueJS and Claude or ChatGPT.">
+  <link rel="canonical" href="https://gluejs.sireniallc.com/examples/best-time-to-run.html">
+  <meta name="theme-color" content="#6d4aff">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GlueJS">
+  <meta property="og:title" content="Best Time to Run Today: Calendar + Weather Shortcut · GlueJS">
+  <meta property="og:description" content="Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too. Built with GlueJS and Claude or ChatGPT.">
+  <meta property="og:url" content="https://gluejs.sireniallc.com/examples/best-time-to-run.html">
+  <meta property="og:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Best Time to Run Today: Calendar + Weather Shortcut · GlueJS">
+  <meta name="twitter:description" content="Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too. Built with GlueJS and Claude or ChatGPT.">
+  <meta name="twitter:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GlueJS","item":"https://gluejs.sireniallc.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://gluejs.sireniallc.com/examples/"},{"@type":"ListItem","position":3,"name":"Best Time to Run Today: Calendar + Weather Shortcut","item":"https://gluejs.sireniallc.com/examples/best-time-to-run.html"}]},{"@context":"https://schema.org","@type":"TechArticle","headline":"Best Time to Run Today: Calendar + Weather Shortcut","description":"Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too. Built with GlueJS and Claude or ChatGPT.","url":"https://gluejs.sireniallc.com/examples/best-time-to-run.html","image":"https://gluejs.sireniallc.com/assets/og.jpg","inLanguage":"en","author":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"publisher":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"about":{"@type":"SoftwareApplication","name":"GlueJS","operatingSystem":"iOS","applicationCategory":"UtilitiesApplication","url":"https://gluejs.sireniallc.com/"}}]</script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="/"><img src="/assets/apple-touch-icon.png" alt="GlueJS app icon" width="34" height="34">GlueJS</a>
+      <nav>
+        <a href="/examples/">Examples</a>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/support.html">Support</a>
+      </nav>
+    </header>
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GlueJS</a> › <a href="/examples/">Examples</a> › When should I run today?</nav>
+
+    <article class="example-page">
+      <span class="tag">Calendar + Health + Weather</span>
+      <h1>Best Time to Run Today: Calendar + Weather Shortcut</h1>
+      <p class="lede">A personal iPhone shortcut that GlueJS makes possible: no app to install beyond GlueJS, built by
+        your AI in a few minutes from one sentence.</p>
+
+      <div class="example">
+        <h2>What to ask for</h2>
+        <p class="ask">“Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too.”</p>
+        <h2>What you get</h2>
+        <div class="result"><b>🏃 6pm–7pm</b><br>66°F, 0% rain · 12.4 mi this week</div>
+        <h2>How it works</h2>
+        <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Alarm stopped</span><span class="d">Shortcuts automation</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Today's calendar</span><span class="d">Calendar</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">This week's distance</span><span class="d">Apple Health</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">Hourly forecast and sunset</span><span class="d">Apple Weather</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Find the best free daylight hour</span><span class="d">Rain, temperature, your calendar</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Widget + notification</span></li>
+            </ol>
+        <dl>
+              <dt>Steps</dt><dd>Shortcuts reads today's events from Calendar, your walking + running distance from Health, and the hourly forecast and sunset from Apple Weather. GlueJS removes hours you're busy or it's dark, scores the rest on rain and temperature, and adds up this week's distance.</dd>
+              <dt>Connects to</dt><dd>Nothing. GlueJS makes no network requests; the forecast comes from Apple Weather.</dd>
+              <dt>You'll be asked</dt><dd>Once each: Location (for the forecast), Calendar, Health access to Walking + Running Distance, and to share them with GlueJS.</dd>
+              <dt>Leaves your phone</dt><dd>Nothing.</dd>
+            </dl>
+      </div>
+
+      <section>
+        <h2>Build it</h2>
+        <p>On a Mac with an AI coding agent such as Claude Code or ChatGPT's Codex, say:</p>
+        <p class="ask">“Use GlueJS (gluejs.sireniallc.com) to make me a shortcut: Each morning, find the best hour to run: when I'm free, it's light, dry and not too hot. Show my miles this week too.”</p>
+        <p>Or start from this example and change it:</p>
+        <pre><code>npx gluejs-ios@latest new my-best-time-to-run --from run-window
+npx gluejs-ios@latest build my-best-time-to-run</code></pre>
+        <p>Open the <code>.shortcut</code> file it makes, tap <strong>Add Shortcut</strong> on your iPhone,
+          and run it once. The full source is on
+          <a href="https://github.com/henrydavidge/gluejs-ios/tree/main/examples/run-window">GitHub</a>, and
+          <a href="/llms.txt">llms.txt</a> has everything your AI needs.</p>
+      </section>
+
+      <section>
+        <h2>More things people build</h2>
+        <ul class="related">
+          <li><a href="/examples/gym-cost-per-visit.html">Gym Cost-Per-Visit Tracker for iPhone</a></li>
+          <li><a href="/examples/recipe-scaler.html">Recipe Scaler Shortcut for iPhone</a></li>
+          <li><a href="/examples/migraine-pressure-tracker.html">Migraine & Barometric Pressure Tracker for iPhone</a></li>
+          <li><a href="/examples/aurora-alert.html">Northern Lights (Aurora) Alert for iPhone</a></li>
+          <li><a href="/examples/stock-portfolio-widget.html">Stock Portfolio Widget & Price Alerts for iPhone</a></li>
+          <li><a href="/examples/caffeine-tracker.html">Caffeine Tracker & Sleep Cutoff Widget for iPhone</a></li>
+          <li><a href="/examples/sourdough-starter-timer.html">Sourdough Starter Peak Timer Widget for iPhone</a></li>
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/support.html">Support</a> · <a href="/llms.txt">llms.txt</a> · <a href="https://github.com/henrydavidge/gluejs-ios">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>

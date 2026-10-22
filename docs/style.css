@@ -158,3 +158,22 @@ footer a { color: var(--muted); }
 .example .chart .ai { background: var(--code-bg); border-color: var(--accent); }
 .examples { grid-template-columns: 1fr; }
 @media (min-width: 760px) { .examples { grid-template-columns: 1fr 1fr; } }
+
+/* Example pages, the examples index and the FAQ */
+.crumbs { font-size: 14px; color: var(--muted); margin: 4px 0 18px; }
+.crumbs a { color: var(--muted); }
+.example-page { max-width: 760px; }
+.example-page h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.12; margin: 10px 0 12px; letter-spacing: -0.02em; }
+.example-page .example h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 18px 0 8px; }
+.example-page .example h2:first-child { margin-top: 0; }
+.example-page section { margin-top: 36px; }
+.example-page .ask { color: var(--text); font-size: 17px; border-left: 3px solid var(--glue); padding-left: 12px; }
+.related { padding-left: 20px; }
+.related li { margin-bottom: 6px; }
+a.example-link { display: block; color: inherit; text-decoration: none; transition: border-color .15s, transform .15s; }
+a.example-link:hover { border-color: var(--accent); transform: translateY(-2px); }
+a.example-link h2 { margin: 6px 0 4px; font-size: 19px; }
+.example .guide { display: inline-block; margin-top: 10px; font-weight: 600; font-size: 15px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 14px 0; }
+.faq summary { cursor: pointer; font-weight: 600; font-size: 17px; }
+.faq details p { color: var(--muted); margin: 10px 0 0; max-width: 720px; }

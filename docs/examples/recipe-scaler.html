@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recipe Scaler Shortcut for iPhone · GlueJS</title>
+  <meta name="description" content="When I share a recipe, ask how many people I'm cooking for and scale the ingredients. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <link rel="canonical" href="https://gluejs.sireniallc.com/examples/recipe-scaler.html">
+  <meta name="theme-color" content="#6d4aff">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GlueJS">
+  <meta property="og:title" content="Recipe Scaler Shortcut for iPhone · GlueJS">
+  <meta property="og:description" content="When I share a recipe, ask how many people I'm cooking for and scale the ingredients. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <meta property="og:url" content="https://gluejs.sireniallc.com/examples/recipe-scaler.html">
+  <meta property="og:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Recipe Scaler Shortcut for iPhone · GlueJS">
+  <meta name="twitter:description" content="When I share a recipe, ask how many people I'm cooking for and scale the ingredients. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.">
+  <meta name="twitter:image" content="https://gluejs.sireniallc.com/assets/og.jpg">
+  <link rel="icon" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="/style.css">
+  <script type="application/ld+json">[{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"GlueJS","item":"https://gluejs.sireniallc.com/"},{"@type":"ListItem","position":2,"name":"Examples","item":"https://gluejs.sireniallc.com/examples/"},{"@type":"ListItem","position":3,"name":"Recipe Scaler Shortcut for iPhone","item":"https://gluejs.sireniallc.com/examples/recipe-scaler.html"}]},{"@context":"https://schema.org","@type":"TechArticle","headline":"Recipe Scaler Shortcut for iPhone","description":"When I share a recipe, ask how many people I'm cooking for and scale the ingredients. A free iPhone shortcut built with GlueJS and Claude or ChatGPT.","url":"https://gluejs.sireniallc.com/examples/recipe-scaler.html","image":"https://gluejs.sireniallc.com/assets/og.jpg","inLanguage":"en","author":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"publisher":{"@type":"Organization","name":"Sirenia LLC","url":"https://sireniallc.com/"},"about":{"@type":"SoftwareApplication","name":"GlueJS","operatingSystem":"iOS","applicationCategory":"UtilitiesApplication","url":"https://gluejs.sireniallc.com/"}}]</script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a class="brand" href="/"><img src="/assets/apple-touch-icon.png" alt="GlueJS app icon" width="34" height="34">GlueJS</a>
+      <nav>
+        <a href="/examples/">Examples</a>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/support.html">Support</a>
+      </nav>
+    </header>
+
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">GlueJS</a> › <a href="/examples/">Examples</a> › Scale any recipe</nav>
+
+    <article class="example-page">
+      <span class="tag">Share sheet</span>
+      <h1>Recipe Scaler Shortcut for iPhone</h1>
+      <p class="lede">A personal iPhone shortcut that GlueJS makes possible: no app to install beyond GlueJS, built by
+        your AI in a few minutes from one sentence.</p>
+
+      <div class="example">
+        <h2>What to ask for</h2>
+        <p class="ask">“When I share a recipe, ask how many people I'm cooking for and scale the ingredients.”</p>
+        <h2>What you get</h2>
+        <div class="result"><b>Scaled × 1½</b><br>3⅓ cups flour · 1½ cups (3 sticks) butter · 3 eggs</div>
+        <h2>How it works</h2>
+        <ol class="chart">
+              <li class="trigger"><span class="k">When</span><span class="l">Share a recipe page</span><span class="d">Safari share sheet</span></li>
+              <li class="data"><span class="k">Shortcuts gets</span><span class="l">“6 servings”</span><span class="d">Ask for input</span></li>
+              <li class="glue"><span class="k">GlueJS</span><span class="l">Read the ingredients, rescale every amount</span><span class="d">Fractions and ranges too</span></li>
+              <li class="out"><span class="k">Then</span><span class="l">Show result</span></li>
+            </ol>
+        <dl>
+              <dt>Steps</dt><dd>Share a recipe page or selected text. GlueJS reads the page's machine-readable ingredient list (most recipe sites include one for search engines) and rescales every amount.</dd>
+              <dt>Connects to</dt><dd>The recipe website you shared, to read the page.</dd>
+              <dt>You'll be asked</dt><dd>Once: allow the shortcut to share Safari items with GlueJS.</dd>
+              <dt>Keys &amp; cost</dt><dd>None.</dd>
+            </dl>
+      </div>
+
+      <section>
+        <h2>Build it</h2>
+        <p>On a Mac with an AI coding agent such as Claude Code or ChatGPT's Codex, say:</p>
+        <p class="ask">“Use GlueJS (gluejs.sireniallc.com) to make me a shortcut: When I share a recipe, ask how many people I'm cooking for and scale the ingredients.”</p>
+        <p>Or start from this example and change it:</p>
+        <pre><code>npx gluejs-ios@latest new my-recipe-scaler --from recipe-scaler
+npx gluejs-ios@latest build my-recipe-scaler</code></pre>
+        <p>Open the <code>.shortcut</code> file it makes, tap <strong>Add Shortcut</strong> on your iPhone,
+          and run it once. The full source is on
+          <a href="https://github.com/henrydavidge/gluejs-ios/tree/main/examples/recipe-scaler">GitHub</a>, and
+          <a href="/llms.txt">llms.txt</a> has everything your AI needs.</p>
+      </section>
+
+      <section>
+        <h2>More things people build</h2>
+        <ul class="related">
+          <li><a href="/examples/gym-cost-per-visit.html">Gym Cost-Per-Visit Tracker for iPhone</a></li>
+          <li><a href="/examples/best-time-to-run.html">Best Time to Run Today: Calendar + Weather Shortcut</a></li>
+          <li><a href="/examples/migraine-pressure-tracker.html">Migraine & Barometric Pressure Tracker for iPhone</a></li>
+          <li><a href="/examples/aurora-alert.html">Northern Lights (Aurora) Alert for iPhone</a></li>
+          <li><a href="/examples/stock-portfolio-widget.html">Stock Portfolio Widget & Price Alerts for iPhone</a></li>
+          <li><a href="/examples/caffeine-tracker.html">Caffeine Tracker & Sleep Cutoff Widget for iPhone</a></li>
+          <li><a href="/examples/sourdough-starter-timer.html">Sourdough Starter Peak Timer Widget for iPhone</a></li>
+        </ul>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span>GlueJS by <a href="https://sireniallc.com/">Sirenia LLC</a></span>
+      <span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/support.html">Support</a> · <a href="/llms.txt">llms.txt</a> · <a href="https://github.com/henrydavidge/gluejs-ios">GitHub</a></span>
+    </div>
+  </footer>
+</body>
+</html>
