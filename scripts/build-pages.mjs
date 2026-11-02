@@ -22,6 +22,9 @@ const PAGES = {
   'Sourdough starter': { slug: 'sourdough-starter-timer', title: 'Sourdough Starter Peak Timer Widget for iPhone', example: 'sourdough-starter' },
 };
 
+// Examples that have a ready-made, signed sample in docs/samples/ (scripts/build-samples.mjs).
+const SAMPLE_FILES = { 'caffeine-cutoff': 'Log Caffeine', 'recipe-scaler': 'Scale Recipe', 'habit-streak': 'Did It' };
+
 const index = read('index.html');
 const section = /<section id="examples">([\s\S]*?)<\/section>/.exec(index)[1];
 const text = (html) => html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
@@ -48,6 +51,7 @@ const header = `  <div class="wrap">
       <a class="brand" href="/"><img src="/assets/apple-touch-icon.png" alt="GlueJS app icon" width="34" height="34">GlueJS</a>
       <nav>
         <a href="/examples/">Examples</a>
+        <a href="/samples/">Samples</a>
         <a href="/#how">How it works</a>
         <a href="/#faq">FAQ</a>
         <a href="/#pricing">Pricing</a>
@@ -149,7 +153,8 @@ for (const card of cards) {
         <h2>Build it</h2>
         <p>On a Mac with an AI coding agent such as Claude Code or ChatGPT's Codex, say:</p>
         <p class="ask">“Use GlueJS (gluejs.sireniallc.com) to make me a shortcut: ${card.ask}”</p>
-        <p>Or start from this example and change it:</p>
+${SAMPLE_FILES[card.example] ? `        <p><a class="button" href="/samples/${encodeURIComponent(SAMPLE_FILES[card.example])}.shortcut" download>Download the ready-made shortcut</a> (open it on your iPhone)</p>
+` : ''}        <p>Or start from this example and change it:</p>
         <pre><code>npx gluejs-ios@latest new my-${card.slug} --from ${card.example}
 npx gluejs-ios@latest build my-${card.slug}</code></pre>
         <p>Open the <code>.shortcut</code> file it makes, tap <strong>Add Shortcut</strong> on your iPhone,
@@ -210,7 +215,7 @@ ${footer}
 // The sitemap: every page, with when its file last changed in git (or today).
 const today = new Date().toISOString().slice(0, 10);
 const urls = ['/', '/examples/', ...cards.map((c) => `/examples/${c.slug}.html`),
-  '/llms.txt', '/reference.md', '/support.html', '/privacy.html', '/terms.html'];
+  '/samples/', '/llms.txt', '/reference.md', '/support.html', '/privacy.html', '/terms.html'];
 writeFileSync(new URL('sitemap.xml', docs), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${SITE}${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}

@@ -1,0 +1,9 @@
+{
+  "name": "Hello GlueJS",
+  "color": "purple",
+  "actions": [
+    { "id": "name", "type": "ask", "prompt": "What's your name?", "inputType": "Text" },
+    { "id": "result", "type": "runScript", "script": "script.ts", "input": "${name}" },
+    { "type": "showResult", "text": "${result}" }
+  ]
+}
